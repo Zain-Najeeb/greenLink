@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { primaryColour } from '@/constants/Colors';
 import { InputProps } from './types';
 
-// Define a reusable input field component, `InputField`, 
-// which receives props for customization and displays 
-// a label, an input box, and an error message if any.
-const InputField: React.FC<InputProps> = ({ 
+// Define and export the `InputField` function directly
+export default function InputField({ 
   label,            // Label text for the input field
   value,            // Current value of the input
   onChangeText,     // Callback to handle changes to the input
@@ -15,7 +14,7 @@ const InputField: React.FC<InputProps> = ({
   autoCapitalize = 'none',  // Auto-capitalization behavior
   autoCorrect = false,      // If true, enables auto-correction
   error            // Error message to display if there's an issue with the input
-}) => {
+}: InputProps) {
   return (
     <View style={styles.inputGroup}>
       {/* Label for the input field */}
@@ -40,7 +39,7 @@ const InputField: React.FC<InputProps> = ({
       {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
-};
+}
 
 // Define styles for the InputField component
 const styles = StyleSheet.create({
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,        // Sets font size for label text
     marginBottom: 8,     // Adds space below label
-    color: '#000',       // Label color
+    color: primaryColour,       // Label color
   },
   input: {
     height: 48,             // Input field height
@@ -69,5 +68,3 @@ const styles = StyleSheet.create({
     marginTop: 4,           // Adds space above error message
   },
 });
-
-export default InputField;

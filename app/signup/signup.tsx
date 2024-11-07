@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import InputField from '../Componenets/inputField';
-import CustomButton from '../Componenets/buttonField';
-
+import { ButtonField, InputField } from '@/components/index'
 interface FormErrors {
   email?: string;
   password?: string;
@@ -78,7 +76,7 @@ const SignInScreen: React.FC = () => {
           error={errors.password}
         />
 
-        <CustomButton
+        <ButtonField
           title="Sign In"
           onPress={handleSignIn}
           style={styles.signInButton}
@@ -86,7 +84,7 @@ const SignInScreen: React.FC = () => {
           disabled={loading}
         />
 
-        <CustomButton
+        <ButtonField
           title="Forgot password?"
           onPress={() => console.log('Forgot password pressed')}
           variant="link"
@@ -97,7 +95,7 @@ const SignInScreen: React.FC = () => {
           <Text style={styles.dividerText}>or</Text>
         </View>
 
-        <CustomButton
+        <ButtonField
           title="Sign up"
           onPress={() => console.log('Sign up pressed')}
           variant="link"

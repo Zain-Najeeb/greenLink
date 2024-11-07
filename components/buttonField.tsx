@@ -6,17 +6,16 @@ import {
   ActivityIndicator   // Spinner component to indicate loading state
 } from 'react-native';
 import { ButtonProps } from './types';
-
-// Define a reusable button component, `CustomButton`,
-// that takes in props for customization such as loading state, variant, and styling.
-const CustomButton: React.FC<ButtonProps> = ({ 
+import { primaryColour }  from '../constants/Colors'
+// Define and export the `CustomButton` function directly
+export default function CustomButton({ 
   onPress,        // Function to handle button press events
   title,          // Text displayed inside the button
   variant = 'primary', // Button style variant ('primary' or 'link')
   style = {},     // Additional styles passed as a prop
   disabled = false, // If true, button is disabled and cannot be pressed
   loading = false  // If true, shows a loading spinner instead of text
-}) => {
+}: ButtonProps) {
   // Define button styles dynamically based on the `variant` and `disabled` props
   const buttonStyles = [
     styles.button,
@@ -41,19 +40,19 @@ const CustomButton: React.FC<ButtonProps> = ({
       {/* Display loading spinner if `loading` is true; otherwise, show button text */}
       {loading ? (
         <ActivityIndicator 
-          color={variant === 'primary' ? '#fff' : '#008751'} // Spinner color based on variant
+          color={variant === 'primary' ? '#fff' : '#'} // Spinner color based on variant
         />
       ) : (
         <Text style={textStyles}>{title}</Text> // Display button title text
       )}
     </TouchableOpacity>
   );
-};
+}
 
 // Define styles for CustomButton component
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#008751',    // Default button background color
+    backgroundColor: primaryColour,    // Default button background color
     height: 48,                    // Button height
     borderRadius: 8,               // Rounded corners for button
     justifyContent: 'center',      // Center text or spinner vertically
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',              // Font weight for primary button text
   },
   linkText: {
-    color: '#008751',               // Text color for 'link' variant
+    color: primaryColour,               // Text color for 'link' variant
     fontSize: 14,                   // Font size for link text
     fontWeight: 'normal',           // Normal font weight for link text
   },
@@ -81,5 +80,3 @@ const styles = StyleSheet.create({
     color: '#666666',               // Text color for disabled button
   },
 });
-
-export default CustomButton;
