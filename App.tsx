@@ -6,8 +6,8 @@
  */
 
  import React from 'react';
- import SignIn from './src/Pages/signIn';
- import SignUp from './src/Pages/signup';
+ import SignIn from './src/frontend/Pages/signIn';
+ import SignUp from './src/frontend/Pages/signup';
  
  function App(): React.JSX.Element {
    return (
