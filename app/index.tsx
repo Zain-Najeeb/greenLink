@@ -3,8 +3,7 @@ import { Link, router } from "expo-router";
 export default function Index() {
   return (
     <View>
-      <Link  href ="/signup/signup"> Go to sign up page </Link>
-
+      <Link href="/users/signIn"> Go to the sign up page pwetty pwease </Link>
     </View>
   );
 }
