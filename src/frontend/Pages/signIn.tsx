@@ -1,0 +1,134 @@
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import InputField from '../Componenets/inputField';
+import CustomButton from '../Componenets/buttonField';
+
+interface FormErrors {
+  email?: string;
+  password?: string;
+}
+
+const SignInScreen: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSignIn = async (): Promise<void> => {
+    if (!validateForm()) return;
+
+    setLoading(true);
+    try {
+      // Simulate API call
+  
+    } catch (error) {
+		//Error 
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.formContainer}>
+        <InputField
+          label="Email"
+          value={email}
+          onChangeText={(text: string) => {
+            setEmail(text);
+            if (errors.email) {
+              setErrors(prev => ({ ...prev, email: undefined }));
+            }
+          }}
+          placeholder="Enter your email"
+          keyboardType="email-address"
+          error={errors.email}
+        />
+
+        <InputField
+          label="Password"
+          value={password}
+          onChangeText={(text: string) => {
+            setPassword(text);
+            if (errors.password) {
+              setErrors(prev => ({ ...prev, password: undefined }));
+            }
+          }}
+          placeholder="Enter your password"
+          secureTextEntry
+          error={errors.password}
+        />
+
+        <CustomButton
+          title="Sign In"
+          onPress={handleSignIn}
+          style={styles.signInButton}
+          loading={loading}
+          disabled={loading}
+        />
+
+        <CustomButton
+          title="Forgot password?"
+          onPress={() => console.log('Forgot password pressed')}
+          variant="link"
+          style={styles.forgotPassword}
+        />
+
+        <View style={styles.dividerContainer}>
+          <Text style={styles.dividerText}>or</Text>
+        </View>
+
+        <CustomButton
+          title="Sign up"
+          onPress={() => console.log('Sign up pressed')}
+          variant="link"
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  formContainer: {
+    padding: 20,
+  },
+  signInButton: {
+    marginTop: 20,
+  },
+  forgotPassword: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  dividerContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  dividerText: {
+    color: '#666',
+  },
+});
+
+export default SignInScreen;
