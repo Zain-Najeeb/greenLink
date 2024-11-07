@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { ButtonField, InputField } from '@/components/index'
+const favicon = require('../../assets/images/favicon.png')
 interface FormErrors {
   email?: string;
   password?: string;
@@ -48,6 +49,7 @@ const SignInScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
+        <Image source={favicon} style={styles.logo}/>
         <InputField
           label="Email"
           value={email}
@@ -126,6 +128,10 @@ const styles = StyleSheet.create({
   },
   dividerText: {
     color: '#666',
+  },
+  logo: {
+    width: '100%',
+    resizeMode: 'contain',
   },
 });
 
