@@ -5,52 +5,50 @@ import { ButtonField, InputField } from "@/components/index";
 const favicon = require("../../assets/images/favicon.png");
 
 interface FormErrors {
-    fullname?: string;
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
+  fullname?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
 }
 
-
 const SignUpScreen: React.FC = () => {
-    const [fullname, setFullName] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [confirmPassword, setConfirmPassword] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
-    const [errors, setErrors] = useState<FormErrors>({});  
+  const [fullname, setFullName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<FormErrors>({});
 
-    const validateForm = (): boolean => {
-        const newErrors: FormErrors = {};
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
 
-        if (!fullname) {
-            newErrors.fullname = "Full name is required";
-        }
+    if (!fullname) {
+      newErrors.fullname = "Full name is required";
+    }
 
-        if (!email) {
-            newErrors.email = "Email is required";
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            newErrors.email = "Email is invalid";
-        }
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Email is invalid";
+    }
 
-        if (!password) {
-            newErrors.password = "Password is required";
-        } else if (password.length < 6) {
-            newErrors.password = "Password must be at least 6 characters";
-        }
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
 
-        if (password != confirmPassword) {
-            newErrors.confirmPassword = "Passwords do not match";
-        }
+    if (password != confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSignUp = async (): Promise<void> => {
     if (!validateForm()) return;
-    
+
     setLoading(true);
     try {
       // Simulate API call
@@ -76,7 +74,6 @@ const SignUpScreen: React.FC = () => {
             }
           }}
           placeholder="Enter your full name"
-          keyboardType="email-address"
           error={errors.fullname}
         />
 
@@ -89,11 +86,10 @@ const SignUpScreen: React.FC = () => {
               setErrors((prev) => ({ ...prev, email: undefined }));
             }
           }}
-          placeholder="Enter your full name"
+          placeholder="Enter your email"
           keyboardType="email-address"
           error={errors.email}
         />
-
 
         <InputField
           label="Password"
@@ -121,8 +117,8 @@ const SignUpScreen: React.FC = () => {
           placeholder="Confirm your password"
           secureTextEntry
           error={errors.confirmPassword}
-        />  
-        
+        />
+
         <ButtonField
           title="Sign Up"
           onPress={handleSignUp}
@@ -130,17 +126,6 @@ const SignUpScreen: React.FC = () => {
           loading={loading}
           disabled={loading}
         />
-
-        {/* <View style={styles.dividerContainer}>
-          <Text style={styles.dividerText}>or</Text>
-        </View>
-        <Link href="./signUp" asChild>
-          <ButtonField
-            title="Sign In"
-            onPress={() => console.log("Sign In pressed")}
-            variant="link"
-          />
-        </Link> */}
       </View>
     </SafeAreaView>
   );
@@ -173,7 +158,5 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 });
-
-  
 
 export default SignUpScreen;
