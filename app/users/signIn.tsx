@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { ButtonField, InputField } from '@/components/index'
+import useApiCall from '@/hooks/useApiCall';
+import createUser from '@/api/users/signin';
 const favicon = require('../../assets/images/favicon.png')
 interface FormErrors {
   email?: string;
@@ -8,6 +10,7 @@ interface FormErrors {
 }
 
 const SignInScreen: React.FC = () => {
+  const { execute, data, error, isLoading, isSuccess, isError, reset } = useApiCall(createUser);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,7 +40,7 @@ const SignInScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      // Simulate API call
+      execute( {email, password}); 
   
     } catch (error) {
 		//Error 
