@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
 import { ButtonField, InputField } from "@/components/index";
+
 import useApiCall from "@/hooks/useApiCall";
 import createUser from "@/api/users/signin";
-const favicon = require("../../assets/images/favicon.png");
+const favicon = require("@/assets/images/favicon.png");
 interface FormErrors {
   email?: string;
   password?: string;
