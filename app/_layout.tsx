@@ -19,7 +19,7 @@ const RootLayout = () => {
         }}
       />
       <Stack.Screen
-        name="users/signup/signUp"
+        name="users/signUp"
         options={{
           headerTitle: "Sign Up",
           headerTintColor: primaryColour,
