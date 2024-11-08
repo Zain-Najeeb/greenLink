@@ -1,9 +1,13 @@
-import { Text, View } from "react-native";
-import { Link, router } from "expo-router";
+import React, { useEffect } from "react";
+import SignInScreen from "./users/signIn"; // Adjust path as necessary
+import { useRouter } from "expo-router";
 export default function Index() {
-  return (
-    <View>
-      <Link href="/users/signIn"> Go to the sign up page pwetty pwease </Link>
-    </View>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    // Delay navigation slightly to ensure the layout is fully mounted
+    setTimeout(() => {
+      router.replace("/users/signIn"); // Replace with your desired route
+    }, 100); // Delay the navigation for 100ms
+  }, [router]);
+  return null;
 }
