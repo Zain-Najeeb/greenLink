@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
-import { ButtonField, InputField } from '@/components/index'
-import useApiCall from '@/hooks/useApiCall';
-import createUser from '@/api/users/signin';
-const favicon = require('../../assets/images/favicon.png')
+import React, { useState } from "react";
+import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
+import { ButtonField, InputField } from "@/components/index";
+import useApiCall from "@/hooks/useApiCall";
+import createUser from "@/api/users/signin";
+const favicon = require("../../assets/images/favicon.png");
 interface FormErrors {
   email?: string;
   password?: string;
 }
 
 const SignInScreen: React.FC = () => {
-  const { execute, data, error, isLoading, isSuccess, isError, reset } = useApiCall(createUser);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const { execute, data, error, isLoading, isSuccess, isError, reset } =
+    useApiCall(createUser);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -20,15 +21,15 @@ const SignInScreen: React.FC = () => {
     const newErrors: FormErrors = {};
 
     if (!email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = "Email is invalid";
     }
 
     if (!password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
@@ -40,10 +41,8 @@ const SignInScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      execute( {email, password}); 
-  
+      execute({ email, password });
     } catch (error) {
-		//Error 
     } finally {
       setLoading(false);
     }
@@ -52,14 +51,14 @@ const SignInScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
-        <Image source={favicon} style={styles.logo}/>
+        <Image source={favicon} style={styles.logo} />
         <InputField
           label="Email"
           value={email}
           onChangeText={(text: string) => {
             setEmail(text);
             if (errors.email) {
-              setErrors(prev => ({ ...prev, email: undefined }));
+              setErrors((prev) => ({ ...prev, email: undefined }));
             }
           }}
           placeholder="Enter your email"
@@ -73,7 +72,7 @@ const SignInScreen: React.FC = () => {
           onChangeText={(text: string) => {
             setPassword(text);
             if (errors.password) {
-              setErrors(prev => ({ ...prev, password: undefined }));
+              setErrors((prev) => ({ ...prev, password: undefined }));
             }
           }}
           placeholder="Enter your password"
@@ -91,7 +90,7 @@ const SignInScreen: React.FC = () => {
 
         <ButtonField
           title="Forgot password?"
-          onPress={() => console.log('Forgot password pressed')}
+          onPress={() => console.log("Forgot password pressed")}
           variant="link"
           style={styles.forgotPassword}
         />
@@ -102,7 +101,7 @@ const SignInScreen: React.FC = () => {
 
         <ButtonField
           title="Sign up"
-          onPress={() => console.log('Sign up pressed')}
+          onPress={() => console.log("Sign up pressed")}
           variant="link"
         />
       </View>
@@ -113,7 +112,7 @@ const SignInScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   formContainer: {
     padding: 20,
@@ -122,19 +121,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   forgotPassword: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   dividerContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 20,
   },
   dividerText: {
-    color: '#666',
+    color: "#666",
   },
   logo: {
-    width: '100%',
-    resizeMode: 'contain',
+    width: "100%",
+    resizeMode: "contain",
   },
 });
 
