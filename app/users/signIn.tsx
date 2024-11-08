@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
+import { Link } from "expo-router";
 import { ButtonField, InputField } from "@/components/index";
 const favicon = require("../../assets/images/favicon.png");
 interface FormErrors {
@@ -76,7 +77,6 @@ const SignInScreen: React.FC = () => {
           secureTextEntry
           error={errors.password}
         />
-
         <ButtonField
           title="Sign In"
           onPress={handleSignIn}
@@ -95,12 +95,13 @@ const SignInScreen: React.FC = () => {
         <View style={styles.dividerContainer}>
           <Text style={styles.dividerText}>or</Text>
         </View>
-
-        <ButtonField
-          title="Sign up"
-          onPress={() => console.log("Sign up pressed")}
-          variant="link"
-        />
+        <Link href="/users/signup/signUp" asChild>
+          <ButtonField
+            title="Sign up"
+            onPress={() => console.log("Sign up pressed")}
+            variant="link"
+          />
+        </Link>
       </View>
     </SafeAreaView>
   );
