@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
 import { Link } from "expo-router";
-import { ButtonField, InputField } from "@/components/index";
+import { ButtonField, InputField, FormLayout } from "@/components/index";
 import { placeholderTextColor } from "@/constants/Colors";
 const favicon = require("../../assets/images/favicon.png");
 interface FormErrors {
@@ -40,31 +40,29 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.formContainer}>
-        <Image source={favicon} style={styles.logo} />
-        <InputField
-          label="Email"
-          value={email}
-          onChangeText={(text: string) => {
-            setEmail(text);
-            if (errors.email) {
-              setErrors((prev) => ({ ...prev, email: undefined }));
-            }
-          }}
-          placeholder="Enter your email"
-          keyboardType="email-address"
-          error={errors.email}
-        />
-        <ButtonField
-          title="Send Verification Email"
-          onPress={handleForgotPassword}
-          style={styles.sendButton}
-          loading={loading}
-          disabled={loading}
-        />
-      </View>
-    </SafeAreaView>
+    <FormLayout>
+      <Image source={favicon} style={styles.logo} />
+      <InputField
+        label="Email"
+        value={email}
+        onChangeText={(text: string) => {
+          setEmail(text);
+          if (errors.email) {
+            setErrors((prev) => ({ ...prev, email: undefined }));
+          }
+        }}
+        placeholder="Enter your email"
+        keyboardType="email-address"
+        error={errors.email}
+      />
+      <ButtonField
+        title="Send Verification Email"
+        onPress={handleForgotPassword}
+        style={styles.sendButton}
+        loading={loading}
+        disabled={loading}
+      />
+    </FormLayout>
   );
 };
 

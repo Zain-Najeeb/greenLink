@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
 import { Link } from "expo-router";
-import { ButtonField, InputField } from "@/components/index";
+import { ButtonField, InputField, FormLayout } from "@/components/index";
 const favicon = require("../../assets/images/favicon.png");
 interface FormErrors {
   email?: string;
@@ -47,63 +47,61 @@ const SignInScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.formContainer}>
-        <Image source={favicon} style={styles.logo} />
-        <InputField
-          label="Email"
-          value={email}
-          onChangeText={(text: string) => {
-            setEmail(text);
-            if (errors.email) {
-              setErrors((prev) => ({ ...prev, email: undefined }));
-            }
-          }}
-          placeholder="Enter your email"
-          keyboardType="email-address"
-          error={errors.email}
-        />
+    <FormLayout>
+      <Image source={favicon} style={styles.logo} />
+      <InputField
+        label="Email"
+        value={email}
+        onChangeText={(text: string) => {
+          setEmail(text);
+          if (errors.email) {
+            setErrors((prev) => ({ ...prev, email: undefined }));
+          }
+        }}
+        placeholder="Enter your email"
+        keyboardType="email-address"
+        error={errors.email}
+      />
 
-        <InputField
-          label="Password"
-          value={password}
-          onChangeText={(text: string) => {
-            setPassword(text);
-            if (errors.password) {
-              setErrors((prev) => ({ ...prev, password: undefined }));
-            }
-          }}
-          placeholder="Enter your password"
-          secureTextEntry
-          error={errors.password}
-        />
+      <InputField
+        label="Password"
+        value={password}
+        onChangeText={(text: string) => {
+          setPassword(text);
+          if (errors.password) {
+            setErrors((prev) => ({ ...prev, password: undefined }));
+          }
+        }}
+        placeholder="Enter your password"
+        secureTextEntry
+        error={errors.password}
+      />
+      <ButtonField
+        title="Sign In"
+        onPress={handleSignIn}
+        style={styles.signInButton}
+        loading={loading}
+        disabled={loading}
+      />
+      <Link href="./forgotPassword" asChild>
         <ButtonField
-          title="Sign In"
-          onPress={handleSignIn}
-          style={styles.signInButton}
-          loading={loading}
-          disabled={loading}
+          title="Forgot password?"
+          onPress={() => console.log("Forgot password pressed")}
+          variant="link"
+          style={styles.forgotPassword}
         />
-        <Link href="./forgotPassword" asChild>
-          <ButtonField
-            title="Forgot password?"
-            onPress={() => console.log("Forgot password pressed")}
-            variant="link"
-            style={styles.forgotPassword}
-          />
-        </Link>
-        <View style={styles.dividerContainer}>
-          <Text style={styles.dividerText}>or</Text>
-        </View>
-        <Link href="./signUp" asChild>
-          <ButtonField
-            title="Sign up"
-            onPress={() => console.log("Sign up pressed")}
-            variant="link"
-          />
-        </Link>
+      </Link>
+      <View style={styles.dividerContainer}>
+        <Text style={styles.dividerText}>or</Text>
       </View>
-    </SafeAreaView>
+      <Link href="./signUp" asChild>
+        <ButtonField
+          title="Sign up"
+          onPress={() => console.log("Sign up pressed")}
+          variant="link"
+        />
+      </Link>
+    </FormLayout>
   );
 };
 
