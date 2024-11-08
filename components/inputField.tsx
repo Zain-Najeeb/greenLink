@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import { primaryColour } from "@/constants/Colors";
+import { primaryColour, placeholderTextColor } from "@/constants/Colors";
 import { InputProps } from "./types";
 
 // Define and export the `InputField` function directly
@@ -29,6 +29,7 @@ export default function InputField({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
+        placeholderTextColor={placeholderTextColor}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
         autoCapitalize={autoCapitalize}

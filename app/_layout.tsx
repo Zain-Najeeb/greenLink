@@ -25,6 +25,13 @@ const RootLayout = () => {
           headerTintColor: primaryColour,
         }}
       />
+      <Stack.Screen
+        name="users/forgotPassword"
+        options={{
+          headerTitle: "Forgot Password",
+          headerTintColor: primaryColour,
+        }}
+      />
     </Stack>
   );
 };
