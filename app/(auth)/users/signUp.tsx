@@ -148,6 +148,9 @@ const styles = StyleSheet.create({
     width: "100%",
     resizeMode: "contain",
   },
+  snackbar: {
+    backgroundColor: "#d72600",
+  }
 });
 
 export default SignUpScreen;
