@@ -4,5 +4,5 @@ export interface CreateUserProps {
 }
 export interface User {
     email: string;
-
+    authenticated: boolean;    
 }

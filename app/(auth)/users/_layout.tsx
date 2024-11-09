@@ -5,22 +5,10 @@ import { User } from "@/types/users";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import { primaryColour } from "@/constants/Colors";
+import { useSession } from "@/hooks/useSession";
 
 export default function RootLayout() {
-  const segments = useSegments();
-  console.log(segments[0]);
-
-  useEffect(() => {
-    const checkSession = async () => {
-      const session = await AsyncStorage.getItem("supabase_session");
-      if (session) {
-        console.log("Session Is here");
-      } else {
-        console.log("no session");
-      }
-    };
-    checkSession();
-  }, []);
+  const { session, isLoading, checkSession } = useSession();
 
   const headerOptions = (headerTitle: string) => {
     return {
