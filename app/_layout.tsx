@@ -9,6 +9,7 @@ const RootLayout = () => {
       <SafeAreaView style={styles.safeArea}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(auth)/users" />
+          <Stack.Screen name="(app)/dashboard" />
         </Stack>
       </SafeAreaView>
     </SessionProvider>

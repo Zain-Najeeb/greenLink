@@ -6,6 +6,7 @@ export interface SessionContextType {
   user: User | null;
   isLoading: boolean;
   checkSession: () => Promise<void>;
+  destroySession: () => void;
 }
 
 export const SessionContext = createContext<SessionContextType>({
@@ -13,6 +14,7 @@ export const SessionContext = createContext<SessionContextType>({
   isLoading: true,
   user: null,
   checkSession: async () => {},
+  destroySession: () => {},
 });
 
 export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -21,6 +23,10 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
   const [session, setSession] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+
+  const destroySession = () => {
+    setSession(null);
+  };
 
   const checkSession = async () => {
     setIsLoading(true);
@@ -46,7 +52,9 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <SessionContext.Provider value={{ session, isLoading, user, checkSession }}>
+    <SessionContext.Provider
+      value={{ session, isLoading, user, checkSession, destroySession }}
+    >
       {children}
     </SessionContext.Provider>
   );

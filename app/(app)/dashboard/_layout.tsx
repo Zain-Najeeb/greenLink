@@ -16,8 +16,7 @@ export default function RootLayout() {
   };
   return (
     <Stack>
-      <Stack.Screen name="signIn" options={headerOptions("Sign In")} />
-      <Stack.Screen name="signUp" options={headerOptions("Create Account")} />
+      <Stack.Screen name="home" options={headerOptions("Home Page")} />
     </Stack>
   );
 }
