@@ -28,11 +28,39 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
   const [isInGeofence, setIsInGeofence] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const notificationRef = useRef<boolean>(false); 
-  const locationSubscriptionRef = useRef<Location.LocationSubscription | null>(null);
+  const [trigger, setTrigger] = useState<boolean>(false); 
 
   useEffect(() => {
+    if (!trigger) return; 
+
     let locationSubscription: Location.LocationSubscription | null = null;
+
+    const watchingGeo = async () => {
+
+      locationSubscription = await Location.watchPositionAsync(
+        {
+          // accuracy: Location.Accuracy.BestForNavigation,
+          distanceInterval: 1,
+        },
+        (newLocation) => {
+          setLocation(newLocation);
+          if (geofence) {
+            checkIfInGeofence(newLocation.coords, geofence);
+          }
+        }
+      );
+    }
+    watchingGeo();
+    return () => {
+      console.log("Unmounted");
+      locationSubscription?.remove(); 
+    }
+  },[trigger])
+
+
+  useEffect(() => {
     const setupPermissions = async () => {
+      console.log("RUNNIG")
       try {
         const locationStatus =
           await Location.requestForegroundPermissionsAsync();
@@ -46,35 +74,15 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
         if (notificationStatus.status !== "granted") {
           setErrorMsg("Permission to send notifications was denied");
           return;
-        }
-
-        const currentLocation = await Location.getCurrentPositionAsync({});
-        setLocation(currentLocation);
-
-        locationSubscription = await Location.watchPositionAsync(
-          {
-            // accuracy: Location.Accuracy.BestForNavigation,
-            distanceInterval: 1,
-          },
-          (newLocation) => {
-            setLocation(newLocation);
-            if (geofence) {
-              checkIfInGeofence(newLocation.coords, geofence);
-            }
-          }
-        );
+        };
+        setTrigger(true); 
       } catch (error) {
         setErrorMsg(
           error instanceof Error ? error.message : "An error occurred"
         );
       }
     };
-
     setupPermissions();
-    return () => {
-      locationSubscription?.remove();
-      locationSubscriptionRef.current = null;
-    };
   }, [geofence]);
 
   const isWithinRadius = (
@@ -123,23 +131,22 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
 
     // Only send notification if the state has changed and it's different from the last notification
     if (notificationRef.current !== inside) {
-      if(inside == true) {
-        locationSubscriptionRef.current?.remove(); 
-        locationSubscriptionRef.current = null;
-      }
-      
       notificationRef.current = inside;
+
       sendNotification(
         inside
           ? "You have entered the geofence area."
           : "You have exited the geofence area."
-      );
+      )
+      if (!inside) {
+        setTrigger((prev) => !prev) ;
+      }
     }
   };
 
   const sendNotification = async (message: string) => {
     try {
-      // console.log("Attempting to send notification:", message);
+      console.log("Attempting to send notification:", message);
 
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -154,7 +161,7 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
         },
       });
 
-      // console.log("Notification scheduled successfully");
+      console.log("Notification scheduled successfully");
     } catch (error) {
       console.error("Failed to send notification:", error);
     }
