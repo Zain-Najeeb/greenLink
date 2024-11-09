@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
 import { placeholderTextColor } from "@/constants/Colors";
-const favicon = require("../../assets/images/favicon.png");
+const favicon = require("@/assets/images/favicon.png");
 interface FormErrors {
   email?: string;
 }

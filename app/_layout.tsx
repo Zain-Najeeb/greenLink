@@ -1,32 +1,23 @@
 import { Stack } from "expo-router";
 import React from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { primaryColour } from "@/constants/Colors";
+
 const RootLayout = () => {
   return (
-    <Stack>
-      <Stack.Screen
-        name="users/signIn"
-        options={{
-          headerTitle: "Sign In",
-          headerTintColor: primaryColour,
-        }}
-      />
-      <Stack.Screen
-        name="users/signUp"
-        options={{
-          headerTitle: "Sign Up",
-          headerTintColor: primaryColour,
-        }}
-      />
-      <Stack.Screen
-        name="users/forgotPassword"
-        options={{
-          headerTitle: "Forgot Password",
-          headerTintColor: primaryColour,
-        }}
-      />
-    </Stack>
+    <SafeAreaView style={styles.safeArea}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(auth)/users" />
+      </Stack>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: primaryColour,
+  },
+});
 
 export default RootLayout;
