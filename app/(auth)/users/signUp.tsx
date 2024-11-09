@@ -99,7 +99,7 @@ const SignUpScreen: React.FC = () => {
             setErrors((prev) => ({ ...prev, email: undefined }));
           }
         }}
-        placeholder="Enter your full name"
+        placeholder="Enter your email address"
         keyboardType="email-address"
         error={errors.email}
       />
