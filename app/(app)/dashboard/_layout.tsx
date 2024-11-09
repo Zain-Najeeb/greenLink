@@ -10,6 +10,7 @@ import Home from "./home";
 import Map from "./map";
 import Account from "./account";
 import React from "react";
+import Navigate from "./navigate";
 
 const Tab = createBottomTabNavigator();
 
@@ -44,6 +45,16 @@ export default function RootLayout() {
             tabBarLabel: "Profile",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="account" color={color} size={26} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Navigate"
+          component={Navigate}
+          options={{
+            tabBarLabel: "Navigate",
+            tabBarIcon: ({ color }) => (
+              <Fontisto name="navigate" color={color} size={26} />
             ),
           }}
         />

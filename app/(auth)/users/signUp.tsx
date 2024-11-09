@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, View, ActivityIndicator } from "react-native";
 import {
   ButtonField,
   InputField,
@@ -157,6 +157,10 @@ const SignUpScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center'
+  },
   signUpButton: {
     marginTop: 20,
   },
