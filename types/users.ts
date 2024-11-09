@@ -5,5 +5,14 @@ export interface CreateUserProps {
 }
 export interface User {
     email: string;
-    authenticated: boolean;    
+    points: number, 
+    routes: Route[]
+    score: number, 
+    ride_count: number,
+    total_distaance: number 
+}
+export interface Route {
+    source: string, 
+    destination: string,
+    count?: number, 
 }

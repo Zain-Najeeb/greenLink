@@ -1,6 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "@/types/users";
+// import { signInWithSession } from "@/util/setSession";
+import { getPointsData } from "@/api/users/getPoints";
 export interface SessionContextType {
   session: string | null;
   user: User | null;
@@ -39,8 +41,14 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
       const storedSession = await AsyncStorage.getItem("supabase_session");
       if (storedSession) {
         setSession(storedSession);
-        console.log("Session is here");
-        //call setuser
+        const sessionJson = JSON.parse(storedSession);
+        console.log(sessionJson);
+        const pointsTable = getPointsData(sessionJson.user.id);
+        // console.log(sessionJson.user.id);
+        // await signInWithSession(sessionJson);
+        // const newUser:User = {
+        //   email: sessionJson.email,
+        // }
       } else {
         setSession(null);
         console.log("No session");
