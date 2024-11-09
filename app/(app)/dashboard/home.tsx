@@ -7,6 +7,7 @@ import { ButtonField } from "@/components";
 import { signOut } from "@/api/users/signOut";
 import { useSession } from "@/hooks/useSession";
 import { Link } from "expo-router";
+import Rewards from "@/components/rewards";
 
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
@@ -17,11 +18,25 @@ export default function Home() {
     await execute();
   };
 
+  // Sample coupon data
+  const coupons = [
+    {
+      storeName: "Domino's",
+      expiryDate: "2024-12-31",
+      discount: "10% off",
+      link: "https://www.dominos.com",
+    },
+    { storeName: "Store B", expiryDate: "2025-01-15", discount: "15% off" },
+    { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
+    { storeName: "Store D", expiryDate: "2025-02-28", discount: "20% off" },
+    { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text> Hi You are On Home page because you have a Session </Text>
+      <Text>Hi! You are on the Home page because you have a session.</Text>
       <ButtonField
-        title="Click Here to Sign out (destroy the session)"
+        title="Click Here to Sign Out (destroy the session)"
         onPress={handeSignOut}
         variant="link"
         style={styles.Home}
@@ -29,12 +44,14 @@ export default function Home() {
 
       <Link href="./(app)/dashboard/navigate" asChild>
         <ButtonField
-          title="Click Here to go to navigation page"
+          title="Click Here to go to Navigation page"
           onPress={() => console.log("nav pressed")}
           variant="link"
         />
       </Link>
-      </SafeAreaView>
+
+      <Rewards coupons={coupons} />
+    </SafeAreaView>
   );
 }
 
@@ -44,6 +61,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
