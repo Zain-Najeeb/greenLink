@@ -9,13 +9,15 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Home from "./home";
 import Map from "./map";
 import Account from "./account";
+import { useSession } from "@/hooks/useSession";
 import React from "react";
 import Navigate from "./navigate";
 
 const Tab = createBottomTabNavigator();
 
 export default function RootLayout() {
-  return (
+  const {session} = useSession(); 
+  return session ? (
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
@@ -73,6 +75,8 @@ export default function RootLayout() {
         />
       </Tab.Navigator>
     </NavigationContainer>
+  ) : (
+    <Redirect href="/(auth)/users" />
   );
 }
 
