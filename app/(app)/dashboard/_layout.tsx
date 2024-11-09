@@ -1,6 +1,6 @@
 import { Stack, Redirect } from "expo-router";
 import { primaryColour } from "@/constants/Colors";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, Image, StyleSheet } from "react-native";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -17,7 +17,20 @@ const Tab = createBottomTabNavigator();
 export default function RootLayout() {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="Home" screenOptions={{tabBarActiveTintColor: primaryColour, headerShown: false}}>
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          tabBarActiveTintColor: primaryColour,
+          headerLeft: () => (
+            <Image
+              source={require("../../../assets/images/favicon.png")}
+              style={styles.headerImage}
+            />
+          ),
+          headerTitle: "",
+          headerTitleAlign: 'center', // Centers the title if you have one
+        }}
+      >
         <Tab.Screen
           name="Map"
           component={Map}
@@ -62,3 +75,15 @@ export default function RootLayout() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  headerImage: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    resizeMode: "contain",
+    maxWidth: 150,
+    maxHeight: 80,
+    marginLeft: 10 
+  }
+})
