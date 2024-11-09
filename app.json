@@ -16,13 +16,19 @@
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyD1kRCB5LVjLfwbrTs596pTzuMwLuh4BjI" 
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need access to your location to provide nearby places."
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",

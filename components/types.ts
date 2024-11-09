@@ -22,3 +22,11 @@ export interface ButtonProps {
 export interface FormLayoutProps {
   children: React.ReactNode;
 }
+
+export interface CustomSnackbarProps {
+  visible: boolean;
+  message: string;
+  onDismiss: () => void;
+  actionLabel?: string;
+  onActionPress?: () => void;
+}

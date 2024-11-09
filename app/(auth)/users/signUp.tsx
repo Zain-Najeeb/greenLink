@@ -1,19 +1,15 @@
 import React, { useState } from "react";
+import { StyleSheet, Image } from "react-native";
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  ActivityIndicator,
-} from "react-native";
-import { Link } from "expo-router";
-import { ButtonField, InputField, FormLayout } from "@/components/index";
-import { CreateUserProps } from "@/types/users";
-import createUser from "@/api/users/signup";
+  ButtonField,
+  InputField,
+  FormLayout,
+  CustomSnackBar,
+} from "@/components/index";
 import useApiCall from "@/hooks/useApiCall";
+import createUser from "@/api/users/signup";
+import { useSession } from "@/hooks/useSession";
 import { primaryColour } from "@/constants/Colors";
-
 const favicon = require("@/assets/images/favicon.png");
 
 interface FormErrors {
@@ -24,39 +20,38 @@ interface FormErrors {
 }
 
 const SignUpScreen: React.FC = () => {
-  const { execute, data, error, isLoading, isSuccess, isError, reset } =
-    useApiCall(createUser);
+  const { execute } = useApiCall(createUser);
+  const { newSession } = useSession();
+
   const [fullname, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!fullname) {
-      newErrors.fullname = "Full name is required";
-    }
-
+    if (!fullname) newErrors.fullname = "Full name is required";
     if (!email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email is invalid";
     }
-
     if (!password) {
       newErrors.password = "Password is required";
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
-
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
     setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) setSnackbarVisible(true);
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -71,9 +66,12 @@ const SignUpScreen: React.FC = () => {
         },
       };
 
-      execute({ email, password, options });
+      const data = await execute({ email, password, options });
+      if (data.data) {
+        newSession(data.data);
+      }
     } catch (error) {
-      //Error
+      // Error handling
     } finally {
       setLoading(false);
     }
@@ -81,7 +79,7 @@ const SignUpScreen: React.FC = () => {
 
   return loading ? (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color={primaryColour}/>
+      <ActivityIndicator size="large" color="#00ff00" />
     </View>
   ) : (
     <FormLayout>
@@ -92,12 +90,11 @@ const SignUpScreen: React.FC = () => {
         value={fullname}
         onChangeText={(text: string) => {
           setFullName(text);
-          if (errors.fullname) {
+          if (errors.fullname)
             setErrors((prev) => ({ ...prev, fullname: undefined }));
-          }
         }}
         placeholder="Enter your full name"
-        keyboardType="email-address"
+        keyboardType="default"
         error={errors.fullname}
       />
 
@@ -106,9 +103,8 @@ const SignUpScreen: React.FC = () => {
         value={email}
         onChangeText={(text: string) => {
           setEmail(text);
-          if (errors.email) {
+          if (errors.email)
             setErrors((prev) => ({ ...prev, email: undefined }));
-          }
         }}
         placeholder="Enter your email address"
         keyboardType="email-address"
@@ -120,9 +116,8 @@ const SignUpScreen: React.FC = () => {
         value={password}
         onChangeText={(text: string) => {
           setPassword(text);
-          if (errors.password) {
+          if (errors.password)
             setErrors((prev) => ({ ...prev, password: undefined }));
-          }
         }}
         placeholder="Enter your password"
         secureTextEntry
@@ -134,9 +129,8 @@ const SignUpScreen: React.FC = () => {
         value={confirmPassword}
         onChangeText={(text: string) => {
           setConfirmPassword(text);
-          if (errors.confirmPassword) {
+          if (errors.confirmPassword)
             setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
-          }
         }}
         placeholder="Confirm your password"
         secureTextEntry
@@ -150,16 +144,19 @@ const SignUpScreen: React.FC = () => {
         loading={loading}
         disabled={loading}
       />
+
+      {/* CustomSnackbar Component */}
+      <CustomSnackBar
+        visible={snackbarVisible}
+        message="Please fix the errors in the form."
+        onDismiss={() => setSnackbarVisible(false)}
+        actionLabel="Dismiss"
+      />
     </FormLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#fff",
-  },
   signUpButton: {
     marginTop: 20,
   },
@@ -178,6 +175,9 @@ const styles = StyleSheet.create({
     width: "100%",
     resizeMode: "contain",
   },
+  snackbar: {
+    backgroundColor: "#d72600",
+  }
 });
 
 export default SignUpScreen;

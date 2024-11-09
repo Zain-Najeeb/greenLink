@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, Redirect } from "expo-router";
 import { primaryColour } from "@/constants/Colors";
 import { SafeAreaView } from "react-native";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
