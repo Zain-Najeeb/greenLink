@@ -32,7 +32,7 @@ export const getNavigationsteps = async (
           if ( RouteInfo[departureAddress]) {
             departureAddress = departureAddress.concat(" (BUS)")
           }
-
+          console.log(step)
           RouteInfo[departureAddress] = {
             lat: step.start_location.lat,
             lng: step.start_location.lng,
