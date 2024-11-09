@@ -10,6 +10,7 @@ import { Link } from "expo-router";
 import Rewards from "@/components/rewards";
 import WelcomeText from "@/components/welcomeText";
 import RecentRoutes from "@/components/recentRoutes";
+import Stats from "@/components/stats";
 
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
@@ -41,10 +42,13 @@ export default function Home() {
     { id: "3", name: "Route 3", date: "2024-11-06" },
   ];
 
+  const score = 60; // Example eco score from 0 to 99
+
   return (
     <SafeAreaView style={styles.container}>
       <WelcomeText />
       <RecentRoutes routes={recentRoutes} />
+      <Stats score={score} />
       <Rewards coupons={coupons} />
     </SafeAreaView>
   );
