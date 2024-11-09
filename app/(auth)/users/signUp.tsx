@@ -12,6 +12,7 @@ import { ButtonField, InputField, FormLayout } from "@/components/index";
 import { CreateUserProps } from "@/types/users";
 import createUser from "@/api/users/signup";
 import useApiCall from "@/hooks/useApiCall";
+import { primaryColour } from "@/constants/Colors";
 
 const favicon = require("@/assets/images/favicon.png");
 
@@ -80,7 +81,7 @@ const SignUpScreen: React.FC = () => {
 
   return loading ? (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#00ff00" />
+      <ActivityIndicator size="large" color={primaryColour}/>
     </View>
   ) : (
     <FormLayout>
@@ -176,7 +177,6 @@ const styles = StyleSheet.create({
   logo: {
     width: "100%",
     resizeMode: "contain",
-    margin: -20,
   },
 });
 

@@ -9,7 +9,7 @@ export default function RootLayout() {
     };
   };
   return (
-    <Stack>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="signIn" options={headerOptions("Sign In")} />
       <Stack.Screen name="signUp" options={headerOptions("Create Account")} />
       <Stack.Screen name="forgotPassword" options={headerOptions("Forgot Password")} />
