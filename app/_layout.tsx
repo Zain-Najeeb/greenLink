@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { primaryColour } from "@/constants/Colors";
 import { SessionProvider } from "@/providers/SessionProvider";

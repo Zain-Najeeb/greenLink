@@ -21,3 +21,16 @@ export interface RouteInformation {
     addresses: AddressInfo[];
     RouteInfo: AddressCoordinates;
   }
+
+  export interface LocationCoords {
+    latitude: number;
+    longitude: number;
+  }
+  
+ export interface GeofencePoint {
+  latitude: number;
+    longitude: number;
+    radius: number; 
+  }
+
+  
