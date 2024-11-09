@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
+
 import useApiCall from "@/hooks/useApiCall";
 import createUser from "@/api/users/signup";
+import { useSession } from "@/hooks/useSession";
 const favicon = require("@/assets/images/favicon.png");
 interface FormErrors {
   email?: string;
@@ -13,6 +15,8 @@ interface FormErrors {
 const SignInScreen: React.FC = () => {
   const { execute, data, error, isLoading, isSuccess, isError, reset } =
     useApiCall(createUser);
+  const { newSession } = useSession();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,8 +46,9 @@ const SignInScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      execute({ email, password });
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
+      const data = execute({ email, password });
+
+      // await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
     } catch (error) {
     } finally {
       setLoading(false);
@@ -102,7 +107,7 @@ const SignInScreen: React.FC = () => {
       <View style={styles.dividerContainer}>
         <Text style={styles.dividerText}>or</Text>
       </View>
-      <Link href="./signUp" asChild>
+      <Link href="/(auth)/users/signUp" asChild>
         <ButtonField
           title="Sign up"
           onPress={() => console.log("Sign up pressed")}

@@ -2,7 +2,7 @@ import { supabase } from '../../util/supabaseClient'
 import { CreateUserProps } from '@/types/users'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
- const createUser = async ( {email, password, options} :CreateUserProps) => {
+ const createUser = async ( {email, password, options} :CreateUserProps) : Promise<string> => {
 
     const { data, error } = await supabase.auth.signUp({
         email,
@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
     if (error) {
         console.error('Error creating user:', error.message);
-        console.log(error.message) ;
+        // console.log(error.message) ;
         throw new Error(error.message);
     }
 
@@ -20,7 +20,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
         await AsyncStorage.setItem('supabase_session', JSON.stringify(data.session));
         console.log('User created and session saved');
       }
-    console.log(data); 
-    return data;
+    return JSON.stringify(data.session);
 }
 export default  createUser; 
