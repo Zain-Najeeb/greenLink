@@ -7,6 +7,7 @@ export interface SessionContextType {
   isLoading: boolean;
   checkSession: () => Promise<void>;
   destroySession: () => void;
+  newSession: (data: string) => void;
 }
 
 export const SessionContext = createContext<SessionContextType>({
@@ -15,6 +16,7 @@ export const SessionContext = createContext<SessionContextType>({
   user: null,
   checkSession: async () => {},
   destroySession: () => {},
+  newSession: () => {},
 });
 
 export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -26,6 +28,9 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const destroySession = () => {
     setSession(null);
+  };
+  const newSession = (data: string) => {
+    setSession(data);
   };
 
   const checkSession = async () => {
@@ -53,7 +58,14 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <SessionContext.Provider
-      value={{ session, isLoading, user, checkSession, destroySession }}
+      value={{
+        session,
+        isLoading,
+        user,
+        checkSession,
+        destroySession,
+        newSession,
+      }}
     >
       {children}
     </SessionContext.Provider>

@@ -7,9 +7,9 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
-import { Link } from "expo-router";
+
 import { ButtonField, InputField, FormLayout } from "@/components/index";
-import { CreateUserProps } from "@/types/users";
+import { useSession } from "@/hooks/useSession";
 import createUser from "@/api/users/signup";
 import useApiCall from "@/hooks/useApiCall";
 
@@ -23,8 +23,9 @@ interface FormErrors {
 }
 
 const SignUpScreen: React.FC = () => {
-  const { execute, data, error, isLoading, isSuccess, isError, reset } =
-    useApiCall(createUser);
+  const { execute } = useApiCall(createUser);
+  const { newSession } = useSession();
+
   const [fullname, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -70,7 +71,10 @@ const SignUpScreen: React.FC = () => {
         },
       };
 
-      execute({ email, password, options });
+      const data = await execute({ email, password, options });
+      if (data.data) {
+        newSession(data.data);
+      }
     } catch (error) {
       //Error
     } finally {
