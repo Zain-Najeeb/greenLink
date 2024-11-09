@@ -1,7 +1,7 @@
 import useApiCall from "@/hooks/useApiCall";
 import "react-native-get-random-values";
 import React from "react";
-import { Text, StyleSheet, SafeAreaView, View } from "react-native";
+import { Text, StyleSheet, SafeAreaView, View, ScrollView } from "react-native";
 
 import { ButtonField } from "@/components";
 import { signOut } from "@/api/users/signOut";
@@ -11,6 +11,8 @@ import Rewards from "@/components/rewards";
 import WelcomeText from "@/components/welcomeText";
 import RecentRoutes from "@/components/recentRoutes";
 import Stats from "@/components/stats";
+import TotalPoints from "@/components/totalPoints";
+import RewardProgress from "@/components/rewardProgress";
 
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
@@ -28,11 +30,36 @@ export default function Home() {
       expiryDate: "2024-12-31",
       discount: "10% off",
       link: "https://www.dominos.com",
+      logo: true,
     },
-    { storeName: "Store B", expiryDate: "2025-01-15", discount: "15% off" },
-    { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
-    { storeName: "Store D", expiryDate: "2025-02-28", discount: "20% off" },
-    { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
+    {
+      storeName: "Store B",
+      expiryDate: "2025-01-15",
+      discount: "15% off",
+      link: "https://www.dominos.com",
+      logo: true,
+    },
+    {
+      storeName: "Store C",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: true,
+    },
+    {
+      storeName: "Store D",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: true,
+    },
+    {
+      storeName: "Store E",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: true,
+    },
   ];
 
   // Sample recent routes data
@@ -43,13 +70,28 @@ export default function Home() {
   ];
 
   const score = 60; // Example eco score from 0 to 99
+  const totalPoints = 5000; // Example total reward points
+
+  // Sample recent routes data and coupon data omitted for brevity
 
   return (
     <SafeAreaView style={styles.container}>
-      <WelcomeText />
-      <RecentRoutes routes={recentRoutes} />
-      <Stats score={score} />
-      <Rewards coupons={coupons} />
+      <ScrollView>
+        <WelcomeText />
+        <RecentRoutes routes={recentRoutes} />
+
+        {/* Eco Score and Total Reward Points Side by Side */}
+        <View style={styles.statsRow}>
+          <TotalPoints points={totalPoints} />
+          <Stats score={score} />
+        </View>
+
+        {/* Progress towards next reward */}
+        <View style={styles.rewardProgressContainer}>
+          <RewardProgress points={totalPoints} target={10000} />
+        </View>
+        <Rewards coupons={coupons} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -58,5 +100,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    backgroundColor: "white",
+  },
+  statsRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  rewardProgressContainer: {
+    marginTop: -30, // Minimized top margin to bring it closer to the above components
+    alignItems: "center", // Center the progress bar
   },
 });
