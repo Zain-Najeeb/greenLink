@@ -5,14 +5,11 @@ import {
   StyleSheet,
   View,
   Platform,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
+import { FormLayoutProps } from "./types";
 
 const keyboardVerticalOffset = Platform.OS === "ios" ? 64 : 0;
-
-interface FormLayoutProps {
-  children: React.ReactNode;
-}
 
 const FormLayout: React.FC<FormLayoutProps> = ({ children }) => {
   return (

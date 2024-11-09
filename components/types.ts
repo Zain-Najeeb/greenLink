@@ -18,3 +18,7 @@ export interface ButtonProps {
   disabled?: boolean;
   loading?: boolean;
 }
+
+export interface FormLayoutProps {
+  children: React.ReactNode;
+}
