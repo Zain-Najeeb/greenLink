@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
+import { CreateUserProps } from '@/types/users'
+import createUser from "@/api/users/signup";
+import useApiCall from "@/hooks/useApiCall";
 
 const favicon = require("@/assets/images/favicon.png");
 
@@ -13,6 +16,8 @@ interface FormErrors {
 }
 
 const SignUpScreen: React.FC = () => {
+  const { execute, data, error, isLoading, isSuccess, isError, reset } =
+    useApiCall(createUser);
   const [fullname, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -52,7 +57,13 @@ const SignUpScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      // Simulate API call
+      const options = {
+        data: {
+          full_name: fullname
+        }
+      };
+      
+      execute({email, password, options});
     } catch (error) {
       //Error
     } finally {

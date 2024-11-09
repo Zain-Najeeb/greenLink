@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
 import useApiCall from "@/hooks/useApiCall";
-import createUser from "@/api/users/signin";
+import createUser from "@/api/users/signup";
 const favicon = require("@/assets/images/favicon.png");
 interface FormErrors {
   email?: string;
