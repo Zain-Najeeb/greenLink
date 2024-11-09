@@ -8,8 +8,9 @@ import { useSession } from "@/hooks/useSession";
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
     useApiCall(signOut);
-  const { session, isLoading } = useSession();
+  const { session, isLoading, destroySession } = useSession();
   const handeSignOut = async () => {
+    destroySession();
     await execute();
   };
 

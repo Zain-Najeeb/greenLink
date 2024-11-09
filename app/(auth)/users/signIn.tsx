@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
+
 import useApiCall from "@/hooks/useApiCall";
 import createUser from "@/api/users/signup";
+import { useSession } from "@/hooks/useSession";
 const favicon = require("@/assets/images/favicon.png");
 interface FormErrors {
   email?: string;
@@ -13,6 +15,8 @@ interface FormErrors {
 const SignInScreen: React.FC = () => {
   const { execute, data, error, isLoading, isSuccess, isError, reset } =
     useApiCall(createUser);
+  const { newSession } = useSession();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,8 +46,9 @@ const SignInScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      execute({ email, password });
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
+      const data = execute({ email, password });
+
+      // await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
     } catch (error) {
     } finally {
       setLoading(false);

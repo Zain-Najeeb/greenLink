@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
-import { Link } from "expo-router";
-import { ButtonField, InputField, FormLayout, CustomSnackBar } from "@/components/index";
-
+import { StyleSheet, Image } from "react-native";
+import {
+  ButtonField,
+  InputField,
+  FormLayout,
+  CustomSnackBar,
+} from "@/components/index";
+import useApiCall from "@/hooks/useApiCall";
+import createUser from "@/api/users/signup";
+import { useSession } from "@/hooks/useSession";
 const favicon = require("@/assets/images/favicon.png");
 
 interface FormErrors {
@@ -13,6 +19,9 @@ interface FormErrors {
 }
 
 const SignUpScreen: React.FC = () => {
+  const { execute } = useApiCall(createUser);
+  const { newSession } = useSession();
+
   const [fullname, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -50,7 +59,16 @@ const SignUpScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      // Simulate API call
+      const options = {
+        data: {
+          full_name: fullname,
+        },
+      };
+
+      const data = await execute({ email, password, options });
+      if (data.data) {
+        newSession(data.data);
+      }
     } catch (error) {
       // Error handling
     } finally {
@@ -67,7 +85,8 @@ const SignUpScreen: React.FC = () => {
         value={fullname}
         onChangeText={(text: string) => {
           setFullName(text);
-          if (errors.fullname) setErrors((prev) => ({ ...prev, fullname: undefined }));
+          if (errors.fullname)
+            setErrors((prev) => ({ ...prev, fullname: undefined }));
         }}
         placeholder="Enter your full name"
         keyboardType="default"
@@ -79,7 +98,8 @@ const SignUpScreen: React.FC = () => {
         value={email}
         onChangeText={(text: string) => {
           setEmail(text);
-          if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+          if (errors.email)
+            setErrors((prev) => ({ ...prev, email: undefined }));
         }}
         placeholder="Enter your email address"
         keyboardType="email-address"
@@ -91,7 +111,8 @@ const SignUpScreen: React.FC = () => {
         value={password}
         onChangeText={(text: string) => {
           setPassword(text);
-          if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
+          if (errors.password)
+            setErrors((prev) => ({ ...prev, password: undefined }));
         }}
         placeholder="Enter your password"
         secureTextEntry
@@ -103,7 +124,8 @@ const SignUpScreen: React.FC = () => {
         value={confirmPassword}
         onChangeText={(text: string) => {
           setConfirmPassword(text);
-          if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+          if (errors.confirmPassword)
+            setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
         }}
         placeholder="Confirm your password"
         secureTextEntry
