@@ -1,17 +1,8 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
-import { CreateUserProps } from "@/types/users";
-import createUser from "@/api/users/signup";
-import useApiCall from "@/hooks/useApiCall";
+import { Snackbar } from 'react-native-paper';
 
 const favicon = require("@/assets/images/favicon.png");
 
@@ -23,14 +14,14 @@ interface FormErrors {
 }
 
 const SignUpScreen: React.FC = () => {
-  const { execute, data, error, isLoading, isSuccess, isError, reset } =
-    useApiCall(createUser);
   const [fullname, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -56,6 +47,10 @@ const SignUpScreen: React.FC = () => {
     }
 
     setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setSnackbarVisible(true);
+    }
     return Object.keys(newErrors).length === 0;
   };
 
@@ -64,13 +59,7 @@ const SignUpScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      const options = {
-        data: {
-          full_name: fullname,
-        },
-      };
-
-      execute({ email, password, options });
+      // Simulate API call
     } catch (error) {
       //Error
     } finally {
@@ -78,11 +67,7 @@ const SignUpScreen: React.FC = () => {
     }
   };
 
-  return loading ? (
-    <View style={styles.container}>
-      <ActivityIndicator size="large" color="#00ff00" />
-    </View>
-  ) : (
+  return (
     <FormLayout>
       <Image source={favicon} style={styles.logo} />
 
@@ -149,16 +134,21 @@ const SignUpScreen: React.FC = () => {
         loading={loading}
         disabled={loading}
       />
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        action={{
+          label: "Dismiss",
+          onPress: () => setSnackbarVisible(false),
+        }}
+      > 
+      Please fix the errors in the form.
+      </Snackbar>
     </FormLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#fff",
-  },
   signUpButton: {
     marginTop: 20,
   },
@@ -176,8 +166,10 @@ const styles = StyleSheet.create({
   logo: {
     width: "100%",
     resizeMode: "contain",
-    margin: -20,
   },
+  Snackbar: {
+    marginTop: 10,
+  }
 });
 
 export default SignUpScreen;
