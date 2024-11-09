@@ -107,7 +107,7 @@ const SignInScreen: React.FC = () => {
       <View style={styles.dividerContainer}>
         <Text style={styles.dividerText}>or</Text>
       </View>
-      <Link href="./signUp" asChild>
+      <Link href="/(auth)/users/signUp" asChild>
         <ButtonField
           title="Sign up"
           onPress={() => console.log("Sign up pressed")}
