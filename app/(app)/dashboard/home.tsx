@@ -16,13 +16,13 @@ export default function Home() {
     {
       latitude: 43.684349176009476,
       longitude: -79.76053713536464,
-      radius: 1000,
+      radius: 30,
     },
   ];
   const { setGeofence } = useGeoFence();
-  // useEffect(() => {
-  //   setGeofence(GeoFences);
-  // }, []);
+  useEffect(() => {
+    setGeofence(GeoFences);
+  }, []);
 
   const { session, isLoading, destroySession } = useSession();
   const handeSignOut = async () => {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import * as Location from "expo-location";
 import * as Notifications from "expo-notifications";
 
@@ -27,9 +27,8 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
   const [geofence, setGeofence] = useState<GeofencePoint[] | null>(null);
   const [isInGeofence, setIsInGeofence] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [lastNotificationState, setLastNotificationState] = useState<
-    boolean | null
-  >(null);
+  const notificationRef = useRef<boolean>(false); 
+  const locationSubscriptionRef = useRef<Location.LocationSubscription | null>(null);
 
   useEffect(() => {
     let locationSubscription: Location.LocationSubscription | null = null;
@@ -54,9 +53,8 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
 
         locationSubscription = await Location.watchPositionAsync(
           {
-            accuracy: Location.Accuracy.High,
-            timeInterval: 5000,
-            distanceInterval: 5,
+            // accuracy: Location.Accuracy.BestForNavigation,
+            distanceInterval: 1,
           },
           (newLocation) => {
             setLocation(newLocation);
@@ -75,6 +73,7 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
     setupPermissions();
     return () => {
       locationSubscription?.remove();
+      locationSubscriptionRef.current = null;
     };
   }, [geofence]);
 
@@ -82,7 +81,7 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
     userLocation: LocationCoords,
     geofencePoint: GeofencePoint
   ): boolean => {
-    const toRadians = (degree: number) => (degree * Math.PI) / 180;
+    const toRadians = (degree: number) => (degree * Math.PI / 180);
     const R = 6371e3; // Radius of Earth in meters
 
     const lat1 = toRadians(userLocation.latitude);
@@ -95,12 +94,14 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
     const a =
       Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
       Math.cos(lat1) *
-        Math.cos(lat2) *
-        Math.sin(deltaLon / 2) *
-        Math.sin(deltaLon / 2);
+      Math.cos(lat2) *
+      Math.sin(deltaLon / 2) *
+      Math.sin(deltaLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c; // Distance in meters
+
+    // console.log(distance);
 
     return distance <= geofencePoint.radius;
   };
@@ -121,8 +122,13 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
     setIsInGeofence(inside);
 
     // Only send notification if the state has changed and it's different from the last notification
-    if (lastNotificationState !== inside) {
-      setLastNotificationState(inside);
+    if (notificationRef.current !== inside) {
+      if(inside == true) {
+        locationSubscriptionRef.current?.remove(); 
+        locationSubscriptionRef.current = null;
+      }
+      
+      notificationRef.current = inside;
       sendNotification(
         inside
           ? "You have entered the geofence area."
@@ -133,7 +139,7 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
 
   const sendNotification = async (message: string) => {
     try {
-      console.log("Attempting to send notification:", message);
+      // console.log("Attempting to send notification:", message);
 
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -148,7 +154,7 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
         },
       });
 
-      console.log("Notification scheduled successfully");
+      // console.log("Notification scheduled successfully");
     } catch (error) {
       console.error("Failed to send notification:", error);
     }
