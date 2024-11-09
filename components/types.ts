@@ -30,3 +30,7 @@ export interface CustomSnackbarProps {
   actionLabel?: string;
   onActionPress?: () => void;
 }
+
+export interface SelectRouteProps {
+
+}

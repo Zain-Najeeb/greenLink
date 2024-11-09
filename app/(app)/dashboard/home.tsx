@@ -8,8 +8,6 @@ import { signOut } from "@/api/users/signOut";
 import { useSession } from "@/hooks/useSession";
 import { Link } from "expo-router";
 import Rewards from "@/components/rewards";
-import WelcomeText from "@/components/welcomeText";
-import RecentRoutes from "@/components/recentRoutes";
 
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
@@ -34,25 +32,35 @@ export default function Home() {
     { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
   ];
 
-  // Sample recent routes data
-  const recentRoutes = [
-    { id: "1", name: "Route 1", date: "2024-11-08" },
-    { id: "2", name: "Route 2", date: "2024-11-07" },
-    { id: "3", name: "Route 3", date: "2024-11-06" },
-  ];
-
   return (
     <SafeAreaView style={styles.container}>
-      <WelcomeText />
-      <RecentRoutes routes={recentRoutes} />
+      <Text>Hi! You are on the Home page because you have a session.</Text>
+      <ButtonField
+        title="Click Here to Sign Out (destroy the session)"
+        onPress={handeSignOut}
+        variant="link"
+        style={styles.Home}
+      />
+
+      <Link href="./(app)/dashboard/navigate" asChild>
+        <ButtonField
+          title="Click Here to go to Navigation page"
+          onPress={() => console.log("nav pressed")}
+          variant="link"
+        />
+      </Link>
+
       <Rewards coupons={coupons} />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  Home: {
+    alignItems: "center",
+    marginTop: 20,
+  },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
   },
 });
