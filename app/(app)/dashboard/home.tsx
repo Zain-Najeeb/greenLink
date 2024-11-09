@@ -14,9 +14,24 @@ import Stats from "@/components/stats";
 import TotalPoints from "@/components/totalPoints";
 import RewardProgress from "@/components/rewardProgress";
 
+import { useGeoFence } from "@/hooks/useGeofence";
+import { GeofencePoint } from "@/types/locationTypes";
+import { useEffect } from "react";
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
     useApiCall(signOut);
+  const GeoFences: GeofencePoint[] = [
+    {
+      latitude: 43.684349176009476,
+      longitude: -79.76053713536464,
+      radius: 1000,
+    },
+  ];
+  const { setGeofence } = useGeoFence();
+  // useEffect(() => {
+  //   setGeofence(GeoFences);
+  // }, []);
+
   const { session, isLoading, destroySession } = useSession();
   const handeSignOut = async () => {
     destroySession();
@@ -97,6 +112,10 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+  Home: {
+    alignItems: "center",
+    marginTop: 20,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 20,

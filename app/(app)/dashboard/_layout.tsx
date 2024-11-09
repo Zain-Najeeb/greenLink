@@ -11,11 +11,13 @@ import Map from "./map";
 import Account from "./account";
 import React from "react";
 import Navigate from "./navigate";
-
+import { insertRoute } from "@/api/route/insertRoute";
+import { useSession } from "@/hooks/useSession";
 const Tab = createBottomTabNavigator();
 
 export default function RootLayout() {
-  return (
+  const {session} = useSession(); 
+  return session ? (
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
@@ -28,7 +30,7 @@ export default function RootLayout() {
             />
           ),
           headerTitle: "",
-          headerTitleAlign: 'center', // Centers the title if you have one
+          headerTitleAlign: "center", // Centers the title if you have one
         }}
       >
         <Tab.Screen
@@ -73,6 +75,8 @@ export default function RootLayout() {
         />
       </Tab.Navigator>
     </NavigationContainer>
+  ) : (
+    <Redirect href="/(auth)/users"/>
   );
 }
 
@@ -84,6 +88,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     maxWidth: 150,
     maxHeight: 80,
-    marginLeft: 10 
-  }
-})
+    marginLeft: 10,
+  },
+});
