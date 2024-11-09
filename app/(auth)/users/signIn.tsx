@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
 import useApiCall from "@/hooks/useApiCall";
