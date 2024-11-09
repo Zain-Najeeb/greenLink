@@ -7,6 +7,8 @@ import useApiCall from "@/hooks/useApiCall";
 import createUser from "@/api/users/signup";
 import { primaryColour } from "@/constants/Colors";
 import { useSession } from "@/hooks/useSession";
+import loginUser from "@/api/users/signin";
+
 const favicon = require("@/assets/images/favicon.png");
 interface FormErrors {
   email?: string;
@@ -15,7 +17,7 @@ interface FormErrors {
 
 const SignInScreen: React.FC = () => {
   const { execute, data, error, isLoading, isSuccess, isError, reset } =
-    useApiCall(createUser);
+    useApiCall(loginUser);
   const { newSession } = useSession();
 
   const [email, setEmail] = useState<string>("");
@@ -47,8 +49,12 @@ const SignInScreen: React.FC = () => {
 
     setLoading(true);
     try {
-      const data = execute({ email, password });
+      const data = await execute({ email, password });
 
+      if (data.data) {
+        newSession(data.data);
+      }
+      
       // await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
     } catch (error) {
     } finally {

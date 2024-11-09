@@ -1,7 +1,7 @@
 export interface CreateUserProps {
     email: string;
     password: string;
-    options?: object;
+    options?: any;
 }
 export interface User {
     email: string;
