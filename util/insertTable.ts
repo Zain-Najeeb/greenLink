@@ -17,7 +17,7 @@ export const insertStats = async (userId: string) => {
         .insert({
             id: userId,
             points: 0,
-            distance: 0, // should be a float
+            distance: 0.0,
             ride_count: 0
         })
         .select()
