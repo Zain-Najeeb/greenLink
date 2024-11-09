@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Image, ActivityIndicator } from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
 import useApiCall from "@/hooks/useApiCall";
@@ -43,13 +43,19 @@ const SignInScreen: React.FC = () => {
     setLoading(true);
     try {
       execute({ email, password });
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
     } catch (error) {
     } finally {
       setLoading(false);
     }
   };
 
-  return (
+  return loading ? (
+    <View style={styles.container}>
+      <ActivityIndicator size="large" color="#00ff00" />
+    </View>
+  )
+  : (
     <FormLayout>
       <Image source={favicon} style={styles.logo} />
       <InputField
@@ -111,10 +117,8 @@ const SignInScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
     backgroundColor: "#fff",
-  },
-  formContainer: {
-    padding: 20,
   },
   signInButton: {
     marginTop: 20,

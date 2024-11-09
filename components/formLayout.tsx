@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { FormLayoutProps } from "./types";
 
-const keyboardVerticalOffset = Platform.OS === "ios" ? 64 : 0;
+const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 
 const FormLayout: React.FC<FormLayoutProps> = ({ children }) => {
   return (
