@@ -18,7 +18,8 @@
         "googleMapsApiKey": "AIzaSyD1kRCB5LVjLfwbrTs596pTzuMwLuh4BjI" 
       },
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "We need access to your location to provide nearby places."
+        "NSLocationWhenInUseUsageDescription": "We need access to your location to provide nearby places.",
+        "NSUserNotificationUsageDescription": "We need permission to send you notifications for geofence alerts."
       }
     },
     "android": {
@@ -27,7 +28,8 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "ACCESS_FINE_LOCATION"
+        "ACCESS_FINE_LOCATION",
+        "POST_NOTIFICATIONS"
       ]
     },
     "web": {

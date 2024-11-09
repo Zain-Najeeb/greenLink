@@ -12,11 +12,12 @@ import Account from "./account";
 import React from "react";
 import Navigate from "./navigate";
 import { insertRoute } from "@/api/route/insertRoute";
-
+import { useSession } from "@/hooks/useSession";
 const Tab = createBottomTabNavigator();
 
 export default function RootLayout() {
-  return (
+  const {session} = useSession(); 
+  return session ? (
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
@@ -74,6 +75,8 @@ export default function RootLayout() {
         />
       </Tab.Navigator>
     </NavigationContainer>
+  ) : (
+    <Redirect href="/(auth)/users"/>
   );
 }
 
