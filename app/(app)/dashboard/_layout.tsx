@@ -77,16 +77,6 @@ export default function RootLayout() {
                 ),
               }}
             />
-            <Tab.Screen
-              name="Navigate"
-              component={Navigate}
-              options={{
-                tabBarLabel: "Navigate",
-                tabBarIcon: ({ color }) => (
-                  <Fontisto name="navigate" color={color} size={26} />
-                ),
-              }}
-            />
           </Tab.Navigator>
         </NavigationContainer>
       </NavigationProvider>

@@ -80,12 +80,34 @@ export default function Home() {
     },
   ];
 
-  const recentRoutes = [
-    { id: "1", name: "Route 1", date: "2024-11-08" },
-    { id: "2", name: "Route 2", date: "2024-11-07" },
-    { id: "3", name: "Route 3", date: "2024-11-06" },
+  const routes = [
+    { id: "1-338", name: "Queen", date: "2024-11-01" },
+    { id: "2-338", name: "Main", date: "2024-11-02" },
+    { id: "4-338", name: "Chinguacousy", date: "2024-11-03" },
+    { id: "5-338", name: "Bovaird", date: "2024-11-04" },
+    { id: "7-338", name: "Kennedy", date: "2024-11-05" },
+    { id: "10-338", name: "South Industrial", date: "2024-11-06" },
+    { id: "12-338", name: "Grenoble", date: "2024-11-07" },
+    { id: "14-338", name: "Torbram", date: "2024-11-08" },
+    { id: "16-338", name: "Southgate", date: "2024-11-09" },
+    { id: "18-338", name: "Dixie", date: "2024-11-10" },
+    { id: "20-338", name: "East Industrial", date: "2024-11-11" },
+    { id: "24-338", name: "Van Kirk", date: "2024-11-12" },
+    { id: "27-338", name: "Robert Parkinson", date: "2024-11-13" },
+    { id: "29-338", name: "Williams", date: "2024-11-14" },
+    { id: "33-338", name: "Peter Robertson", date: "2024-11-15" },
+    { id: "36-338", name: "Gardenbrooke", date: "2024-11-16" },
+    { id: "50-338", name: "Gore Road", date: "2024-11-17" },
+    { id: "53-338", name: "Ray Lawson", date: "2024-11-18" },
+    { id: "115-338", name: "Pearson Airport Express", date: "2024-11-19" },
+    { id: "502-338", name: "Zum Main", date: "2024-11-20" },
   ];
 
+  const recentRoutes = getRandomRoutes();
+  function getRandomRoutes(): { id: string; name: string; date: string }[] {
+    const shuffledRoutes = routes.sort(() => 0.5 - Math.random());
+    return shuffledRoutes.slice(0, 3);
+  }
   // Sample recent routes data and coupon data omitted for brevity
 
   return (
