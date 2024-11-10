@@ -8,7 +8,7 @@ const CustomSnackbar: React.FC<CustomSnackbarProps> = ({
   visible,
   message,
   onDismiss,
-  actionLabel = 'Undo',
+  actionLabel = 'Close',
   onActionPress,
 }) => {
   return (
