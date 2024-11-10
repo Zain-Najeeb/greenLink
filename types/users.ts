@@ -4,12 +4,13 @@ export interface CreateUserProps {
     options?: any;
 }
 export interface User {
+    name: string, 
     email: string;
     points: number, 
     routes: Route[]
     score: number, 
     ride_count: number,
-    total_distaance: number 
+    total_distance: number 
 }
 export interface Route {
     source: string, 
