@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Dispatch, SetStateAction } from "react";
 import {
@@ -6,7 +6,6 @@ import {
   AddressInfo,
   GeofencePoint,
   LocationCoords,
-  RouteInformation,
 } from "@/types/locationTypes";
 import { useGeoFence } from "@/hooks/useGeofence";
 
@@ -23,7 +22,6 @@ export interface NavigationContextType {
   setActive: Dispatch<SetStateAction<boolean>>;
 }
 
-// Default values for the context
 export const NavigationContext = createContext<NavigationContextType>({
   source: null,
   destination: null,
@@ -46,27 +44,28 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [routeInfo, setRouteInfo] = useState<AddressCoordinates | null>(null);
   const [step, setStep] = useState<number | null>(null);
   const [active, setActive] = useState<boolean>(false);
-  const totalTime = useRef<number | null>(null);
-  const totalDistance = useRef<number | null>(null);
-  const busDistance = useRef<number | null>(null);
+  const [totalTime, setTotalTime] = useState<number | null>(null);
+  const [totalDistance, setTotalDistance] = useState<number | null>(null);
+  const [busDistance, setBusDistance] = useState<number | null>(null);
   const { setGeofence } = useGeoFence();
 
   useEffect(() => {
-    if (!active) return;
+    // if (!active) return;
 
     const setNavigation = async () => {
       const geoLocations: GeofencePoint[] = [];
       const storedAddress = await AsyncStorage.getItem("addresses");
       const storedRoutes = await AsyncStorage.getItem("routeInfo");
-      // console.log(storedAddress, storedRoutes, "HERE");
+      console.log(storedAddress, storedRoutes);
       if (storedAddress && storedRoutes) {
         const savedLocations = JSON.parse(storedAddress) as AddressInfo[];
         const savedRoutes = JSON.parse(storedRoutes) as AddressCoordinates;
         setRouteInfo(savedRoutes);
         setAddresses(savedLocations);
+
         let total = 0;
         savedLocations.forEach((element) => {
-          if (element.type != "Walk to") {
+          if (element.type !== "Walk to") {
             if (!source) {
               setSource({
                 latitude: savedRoutes[element.address].lat,
@@ -74,20 +73,20 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
               });
             }
 
-            let parts =
+            const parts =
               savedRoutes[element.address].distanceFromPrevious.split(" ");
-            let value: number = parseFloat(parts[0]);
-            if (parts[1] == "m") {
-              value = value / 1000;
+            let value = parseFloat(parts[0]);
+            if (parts[1] === "m") {
+              value /= 1000;
             }
+
             if (element.type === "Get on") {
-              busDistance.current;
               geoLocations.push({
                 latitude: savedRoutes[element.address].lat,
                 longitude: savedRoutes[element.address].lng,
                 radius: 50,
                 step: 0,
-                message: `Get on at  ${element.address} at ${
+                message: `Get on at ${element.address} at ${
                   savedRoutes[element.address].time
                 }`,
               });
@@ -97,35 +96,33 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
                 longitude: savedRoutes[element.address].lng,
                 radius: 50,
                 step: 0,
-                message: `Get off at  ${element.address} at ${
+                message: `Get off at ${element.address} at ${
                   savedRoutes[element.address].time
                 }`,
               });
             }
+
             total += value;
           }
         });
 
         if (geoLocations.length !== 0) {
           geoLocations[geoLocations.length - 1].step = 1;
-          busDistance.current = total;
+          setBusDistance(total);
           setDestination({
             latitude: geoLocations[geoLocations.length - 1].latitude,
             longitude: geoLocations[geoLocations.length - 1].longitude,
           });
           setGeofence(geoLocations);
         }
-      } else {
-        return;
       }
-      console.log(geoLocations);
     };
 
     setNavigation();
-  }, [active]);
+  }, [active, source]);
 
   useEffect(() => {
-    const setNavigation = async () => {
+    const initializeNavigation = async () => {
       const storedAddress = await AsyncStorage.getItem("addresses");
       const storedRoutes = await AsyncStorage.getItem("routeInfo");
 
@@ -135,20 +132,20 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
 
-    setNavigation();
+    initializeNavigation();
   }, []);
 
   return (
     <NavigationContext.Provider
       value={{
-        source: null,
-        destination: null,
+        source,
+        destination,
         addresses: addressInfo ?? [],
-        routeInfo: routeInfo ?? null,
+        routeInfo,
         step: step ?? 0,
-        busDistance: busDistance.current ?? 0,
-        totalTime: totalTime.current ?? 0,
-        totalDistance: totalDistance.current ?? 0,
+        busDistance,
+        totalTime,
+        totalDistance,
         active,
         setActive,
       }}

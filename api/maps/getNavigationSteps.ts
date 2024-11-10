@@ -7,6 +7,7 @@ export const getNavigationsteps = async (
   sourceAddress: string,
   destinationAddress: string
 ): Promise<NavigationResult> => {
+
   const RouteInfo: AddressCoordinates = {};
   const addresses: AddressInfo[] = [];
 

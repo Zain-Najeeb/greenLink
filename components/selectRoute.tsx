@@ -37,6 +37,7 @@ const SelectRoute: React.FC<SelectRouteProps> = ({ isLoading, setLoading }) => {
     setLoading(true);
     try {
       const result = await execute(sourceRef.current, destinationRef.current);
+      console.log(result);
       if (result.success && result.data) {
         setAddresses(result.data.addresses);
         setCoordinatesDict(result.data.RouteInfo);

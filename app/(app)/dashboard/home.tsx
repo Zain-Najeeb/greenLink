@@ -86,6 +86,8 @@ export default function Home() {
     { id: "3", name: "Route 3", date: "2024-11-06" },
   ];
 
+  // Sample recent routes data and coupon data omitted for brevity
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -95,7 +97,7 @@ export default function Home() {
         {/* Eco Score and Total Reward Points Side by Side */}
         <View style={styles.statsRow}>
           <TotalPoints points={user?.points!} />
-          <Stats score={user?.score!} />
+          <Stats score={user?.eco_score!} />
         </View>
 
         {/* Progress towards next reward */}
