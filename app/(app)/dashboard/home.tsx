@@ -1,11 +1,14 @@
 import useApiCall from "@/hooks/useApiCall";
 import "react-native-get-random-values";
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, SafeAreaView, View } from "react-native";
+
 import { ButtonField } from "@/components";
 import { signOut } from "@/api/users/signOut";
 import { useSession } from "@/hooks/useSession";
 import { Link } from "expo-router";
+import Rewards from "@/components/rewards";
+
 import { useGeoFence } from "@/hooks/useGeofence";
 import { GeofencePoint } from "@/types/locationTypes";
 import { useEffect } from "react";
@@ -30,24 +33,40 @@ export default function Home() {
     await execute();
   };
 
+  // Sample coupon data
+  const coupons = [
+    {
+      storeName: "Domino's",
+      expiryDate: "2024-12-31",
+      discount: "10% off",
+      link: "https://www.dominos.com",
+    },
+    { storeName: "Store B", expiryDate: "2025-01-15", discount: "15% off" },
+    { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
+    { storeName: "Store D", expiryDate: "2025-02-28", discount: "20% off" },
+    { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
+  ];
+
   return (
-    <>
-      <Text> Hi You are On Home page because you have a Session </Text>
+    <SafeAreaView style={styles.container}>
+      <Text>Hi! You are on the Home page because you have a session.</Text>
       <ButtonField
-        title="Click Here to Sign out (destroy the session)"
+        title="Click Here to Sign Out (destroy the session)"
         onPress={handeSignOut}
         variant="link"
         style={styles.Home}
       />
 
-      <Link href="/(app)/dashboard/navigate" asChild>
+      <Link href="./(app)/dashboard/navigate" asChild>
         <ButtonField
-          title="Click Here to go to navigation page"
+          title="Click Here to go to Navigation page"
           onPress={() => console.log("nav pressed")}
           variant="link"
         />
       </Link>
-    </>
+
+      <Rewards coupons={coupons} />
+    </SafeAreaView>
   );
 }
 
@@ -55,5 +74,8 @@ const styles = StyleSheet.create({
   Home: {
     alignItems: "center",
     marginTop: 20,
+  },
+  container: {
+    flex: 1,
   },
 });

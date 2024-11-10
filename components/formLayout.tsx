@@ -13,9 +13,8 @@ const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 
 const FormLayout: React.FC<FormLayoutProps> = ({ children }) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
-        style={styles.keyboardAvoidingView}
         behavior="position"
         keyboardVerticalOffset={keyboardVerticalOffset}
       >
@@ -23,20 +22,21 @@ const FormLayout: React.FC<FormLayoutProps> = ({ children }) => {
           <View style={styles.formContainer}>{children}</View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    justifyContent: 'center'
   },
   formContainer: {
     padding: 20,
   },
   keyboardAvoidingView: {
     flex: 1,
+    justifyContent: "center",
   },
   scrollView: {
     padding: 16,

@@ -5,6 +5,7 @@ import { ButtonField, InputField, FormLayout } from "@/components/index";
 
 import useApiCall from "@/hooks/useApiCall";
 import createUser from "@/api/users/signup";
+import { primaryColour } from "@/constants/Colors";
 import { useSession } from "@/hooks/useSession";
 import loginUser from "@/api/users/signin";
 
@@ -63,7 +64,7 @@ const SignInScreen: React.FC = () => {
 
   return loading ? (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#00ff00" />
+      <ActivityIndicator size="large" color={primaryColour} />
     </View>
   ) : (
     <FormLayout>
