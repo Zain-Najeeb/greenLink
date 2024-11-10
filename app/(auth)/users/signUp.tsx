@@ -16,6 +16,7 @@ import useApiCall from "@/hooks/useApiCall";
 import createUser from "@/api/users/signup";
 import { useSession } from "@/hooks/useSession";
 import { useSnackbar } from "@/hooks/useSnackbar";
+import { primaryColour } from "@/constants/Colors";
 
 const favicon = require("@/assets/images/favicon.png");
 
@@ -96,83 +97,80 @@ const SignUpScreen: React.FC = () => {
 
   return loading ? (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#00ff00" />
+      <ActivityIndicator size="large" color={primaryColour} />
     </View>
   ) : (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <FormLayout>
-        <Image source={favicon} style={styles.logo} />
+    <FormLayout>
+      <Image source={favicon} style={styles.logo} />
 
-        <InputField
-          label="Full Name"
-          value={fullname}
-          onChangeText={(text: string) => {
-            setFullName(text);
-            if (errors.fullname)
-              setErrors((prev) => ({ ...prev, fullname: undefined }));
-          }}
-          placeholder="Enter your full name"
-          keyboardType="default"
-          error={errors.fullname}
-        />
+      <InputField
+        label="Full Name"
+        value={fullname}
+        onChangeText={(text: string) => {
+          setFullName(text);
+          if (errors.fullname)
+            setErrors((prev) => ({ ...prev, fullname: undefined }));
+        }}
+        placeholder="Enter your full name"
+        keyboardType="default"
+        error={errors.fullname}
+      />
 
-        <InputField
-          label="Email"
-          value={email}
-          onChangeText={(text: string) => {
-            setEmail(text);
-            if (errors.email)
-              setErrors((prev) => ({ ...prev, email: undefined }));
-          }}
-          placeholder="Enter your email address"
-          keyboardType="email-address"
-          error={errors.email}
-        />
+      <InputField
+        label="Email"
+        value={email}
+        onChangeText={(text: string) => {
+          setEmail(text);
+          if (errors.email)
+            setErrors((prev) => ({ ...prev, email: undefined }));
+        }}
+        placeholder="Enter your email address"
+        keyboardType="email-address"
+        error={errors.email}
+      />
 
-        <InputField
-          label="Password"
-          value={password}
-          onChangeText={(text: string) => {
-            setPassword(text);
-            if (errors.password)
-              setErrors((prev) => ({ ...prev, password: undefined }));
-          }}
-          placeholder="Enter your password"
-          secureTextEntry
-          error={errors.password}
-        />
+      <InputField
+        label="Password"
+        value={password}
+        onChangeText={(text: string) => {
+          setPassword(text);
+          if (errors.password)
+            setErrors((prev) => ({ ...prev, password: undefined }));
+        }}
+        placeholder="Enter your password"
+        secureTextEntry
+        error={errors.password}
+      />
 
-        <InputField
-          label="Confirm Password"
-          value={confirmPassword}
-          onChangeText={(text: string) => {
-            setConfirmPassword(text);
-            if (errors.confirmPassword)
-              setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
-          }}
-          placeholder="Confirm your password"
-          secureTextEntry
-          error={errors.confirmPassword}
-        />
+      <InputField
+        label="Confirm Password"
+        value={confirmPassword}
+        onChangeText={(text: string) => {
+          setConfirmPassword(text);
+          if (errors.confirmPassword)
+            setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+        }}
+        placeholder="Confirm your password"
+        secureTextEntry
+        error={errors.confirmPassword}
+      />
 
-        <ButtonField
-          title="Sign Up"
-          onPress={handleSignUp}
-          style={styles.signUpButton}
-          loading={loading}
-          disabled={loading}
-        />
-      </FormLayout>
-    </ScrollView>
+      <ButtonField
+        title="Sign Up"
+        onPress={handleSignUp}
+        style={styles.signUpButton}
+        loading={loading}
+        disabled={loading}
+      />
+    </FormLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
-  scrollContainer: {},
   signUpButton: {
     marginTop: 10,
     marginBottom: 10,
