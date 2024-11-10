@@ -10,6 +10,7 @@ const createUser = async ( {email, password, options} :CreateUserProps) : Promis
         password,
         options
     });
+    console
 
     if (error) {
         console.error('Error creating user:', error.message);
@@ -18,6 +19,8 @@ const createUser = async ( {email, password, options} :CreateUserProps) : Promis
     }
 
     if(!data?.session || !options?.data?.full_name) {
+        console.log(data);
+
         console.error("Data wasn't returned correctly");
         throw new Error("Data wasn't returned correctly");
     }

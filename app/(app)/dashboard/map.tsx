@@ -8,18 +8,22 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { ButtonField, CustomMarker } from "@/components";
 import Entypo from "@expo/vector-icons/Entypo";
 import { pinIconColour, primaryColour } from "@/constants/Colors";
-
+import { useNavigation } from "@/hooks/useNavigation";
+import { useMemo } from "react";
 const GOOGLE_MAPS_APIKEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY as string;
 
 export default function Map() {
   const [selectRoute, setSelectRoute] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [hasValidRoute, setHasValidRoute] = useState<boolean>(false);
-
-  const route = {
-    origin: { latitude: 43.687393, longitude: -79.76181799999999 },
-    destination: { latitude: 43.691067, longitude: -79.766769 },
-  };
+  const { active } = useNavigation();
+  const route = useMemo(
+    () => ({
+      origin: { latitude: 43.687393, longitude: -79.76181799999999 },
+      destination: { latitude: 43.691067, longitude: -79.766769 },
+    }),
+    []
+  );
   const mapData = {
     region: {
       latitude: 43.683334,
@@ -31,12 +35,7 @@ export default function Map() {
 
   // Check if route coordinates are valid
   const isValidRoute = () => {
-    return (
-      route.origin.latitude !== 0 &&
-      route.origin.longitude !== 0 &&
-      route.destination.latitude !== 100 &&
-      route.destination.longitude !== 100
-    );
+    return active;
   };
 
   const focusOnUser = () => {
@@ -51,6 +50,7 @@ export default function Map() {
   };
   const mapRef = React.useRef<MapView>(null);
   useEffect(() => {
+    console.log("another");
     setSelectRoute(false);
   }, [isLoading]);
   useEffect(() => {
@@ -66,6 +66,10 @@ export default function Map() {
       });
     }
   }, [route.origin, route.destination]);
+  // useEffect(() => {
+
+  // }, [])
+
   useEffect(() => {
     const validRoute = isValidRoute();
     setHasValidRoute(validRoute);

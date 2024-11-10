@@ -50,21 +50,22 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
   const { setGeofence } = useGeoFence();
 
   useEffect(() => {
-    // if (!active) return;
+    if (!active) return;
 
     const setNavigation = async () => {
       const geoLocations: GeofencePoint[] = [];
       const storedAddress = await AsyncStorage.getItem("addresses");
       const storedRoutes = await AsyncStorage.getItem("routeInfo");
-      console.log(storedAddress, storedRoutes);
+
       if (storedAddress && storedRoutes) {
         const savedLocations = JSON.parse(storedAddress) as AddressInfo[];
         const savedRoutes = JSON.parse(storedRoutes) as AddressCoordinates;
         setRouteInfo(savedRoutes);
         setAddresses(savedLocations);
-
+        console.log(storedAddress);
         let total = 0;
         savedLocations.forEach((element) => {
+          // console.log(element);
           if (element.type !== "Walk to") {
             if (!source) {
               setSource({
@@ -119,7 +120,7 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     setNavigation();
-  }, [active, source]);
+  }, [active]);
 
   useEffect(() => {
     const initializeNavigation = async () => {

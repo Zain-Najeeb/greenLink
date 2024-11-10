@@ -30,9 +30,26 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
 
   const destroySession = () => {
+    setUser(null);
     setSession(null);
   };
-  const newSession = (data: string) => {
+  const newSession = async (data: string) => {
+    const jsonSession = JSON.parse(data);
+
+    const { profile, stats, routes } = await query(jsonSession.user.id);
+    const newUser: User = {
+      id: profile.id,
+      email: profile.email,
+      name: profile.full_name,
+      ride_count: stats.ride_count,
+      eco_score: stats.eco_score,
+      total_distance: stats.distance,
+      points: stats.points,
+      routes: routes!,
+    };
+
+    setUser(newUser);
+    console.log(jsonSession);
     setSession(data);
   };
 
@@ -43,7 +60,6 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
       if (storedSession) {
         setSession(storedSession);
         const sessionJson = JSON.parse(storedSession);
-        // console.log(sessionJson);
 
         const { profile, stats, routes } = await query(sessionJson.user.id);
 

@@ -64,7 +64,6 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const setupPermissions = async () => {
-      console.log("RUNNIG");
       try {
         const locationStatus =
           await Location.requestForegroundPermissionsAsync();
