@@ -48,8 +48,11 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
         const proifle = await getPointsData(sessionJson.user.id);
         const stats = await getStatsData(sessionJson.user.id);
         const recentRoutes = await getRoutesData(sessionJson.user.id);
+
         await signInWithSession(sessionJson);
+
         const newUser: User = {
+          id: sessionJson.user.id,
           email: sessionJson.email,
           name: proifle.full_name,
           ride_count: stats.ride_count,
@@ -58,6 +61,8 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
           points: 0,
           routes: recentRoutes,
         };
+
+        setUser(newUser);
       } else {
         setSession(null);
         console.log("No session");

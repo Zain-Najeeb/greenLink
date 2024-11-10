@@ -1,10 +1,17 @@
 import supabase from "@/util/supabaseClient"
-export  const getRoutesData =  async (id: string) => {
+import { Route } from "@/types/users"
+
+export  const getRoutesData =  async (user_id: string): Promise<Route[]> => {
     // console.log(id)
     const { data: routes, error } = await supabase
-    .from("Profiles")
-    .select("*")
-    .eq("id", id)
+    .from("routes")
+    .select("source, destination, count")
+    .eq("user", user_id)
     // .single();
-    return  routes
+
+    if(!routes) {
+        return []
+    }
+
+    return routes
 }

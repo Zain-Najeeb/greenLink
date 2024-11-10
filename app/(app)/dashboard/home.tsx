@@ -32,7 +32,7 @@ export default function Home() {
     setGeofence(GeoFences);
   }, []);
 
-  const { session, isLoading, destroySession } = useSession();
+  const { session, user, isLoading, destroySession } = useSession();
   const handeSignOut = async () => {
     destroySession();
     await execute();
@@ -45,65 +45,59 @@ export default function Home() {
       expiryDate: "2024-12-31",
       discount: "10% off",
       link: "https://www.dominos.com",
-      logo: true,
+      logo: '',
     },
     {
       storeName: "Store B",
       expiryDate: "2025-01-15",
       discount: "15% off",
       link: "https://www.dominos.com",
-      logo: true,
+      logo: '',
     },
     {
       storeName: "Store C",
       expiryDate: "2025-02-28",
       discount: "20% off",
       link: "https://www.dominos.com",
-      logo: true,
+      logo: '',
     },
     {
       storeName: "Store D",
       expiryDate: "2025-02-28",
       discount: "20% off",
       link: "https://www.dominos.com",
-      logo: true,
+      logo: '',
     },
     {
       storeName: "Store E",
       expiryDate: "2025-02-28",
       discount: "20% off",
       link: "https://www.dominos.com",
-      logo: true,
+      logo: '',
     },
   ];
 
-  // Sample recent routes data
   const recentRoutes = [
     { id: "1", name: "Route 1", date: "2024-11-08" },
     { id: "2", name: "Route 2", date: "2024-11-07" },
     { id: "3", name: "Route 3", date: "2024-11-06" },
   ];
 
-  const score = 60; // Example eco score from 0 to 99
-  const totalPoints = 5000; // Example total reward points
-
-  // Sample recent routes data and coupon data omitted for brevity
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <WelcomeText />
+        <WelcomeText name={user?.name!} />
         <RecentRoutes routes={recentRoutes} />
 
         {/* Eco Score and Total Reward Points Side by Side */}
         <View style={styles.statsRow}>
-          <TotalPoints points={totalPoints} />
-          <Stats score={score} />
+          <TotalPoints points={user?.points!} />
+          <Stats score={user?.score!} />
         </View>
 
         {/* Progress towards next reward */}
         <View style={styles.rewardProgressContainer}>
-          <RewardProgress points={totalPoints} target={10000} />
+          <RewardProgress points={user?.points!} target={10000} />
         </View>
         <Rewards coupons={coupons} />
       </ScrollView>
