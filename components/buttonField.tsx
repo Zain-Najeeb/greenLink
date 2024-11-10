@@ -3,11 +3,12 @@ import {
   TouchableOpacity, // Button component that responds to touch events
   Text, // Text component for button label
   StyleSheet, // StyleSheet for defining component styles
-  ActivityIndicator, // Spinner component to indicate loading state
+  ActivityIndicator,
+  View, // Spinner component to indicate loading state
 } from "react-native";
 import { ButtonProps } from "./types";
 import { primaryColour } from "../constants/Colors";
-import { Ref } from 'react';
+import { Ref } from "react";
 // Define and export the `CustomButton` function directly
 const CustomButton = forwardRef(
   (
@@ -18,6 +19,7 @@ const CustomButton = forwardRef(
       style = {},
       disabled = false,
       loading = false,
+      icon = null,
     }: ButtonProps,
     ref: Ref<TouchableOpacity>
   ) => {
@@ -44,14 +46,17 @@ const CustomButton = forwardRef(
         {loading ? (
           <ActivityIndicator color={variant === "primary" ? "#fff" : "#000"} />
         ) : (
-          <Text style={textStyles}>{title}</Text>
+          <View>
+            {icon && <View>{icon}</View>}
+            <Text style={textStyles}>{title}</Text>
+          </View>
         )}
       </TouchableOpacity>
     );
   }
 );
 
-export default CustomButton
+export default CustomButton;
 
 // Define styles for CustomButton component
 const styles = StyleSheet.create({

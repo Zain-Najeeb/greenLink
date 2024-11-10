@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, StyleSheet, SafeAreaView, View } from "react-native";
 import MapView from "react-native-maps";
 import { PROVIDER_DEFAULT, Marker } from "react-native-maps";
 import SelectRoute from "@/components/selectRoute";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 // import SwipeUpDown from "react-native-swipe-up-down";
 
 import { ButtonField } from "@/components";
 export default function Map() {
+  const [selectRoute, setSelectRoute] = useState<boolean>(false);
   const mapData = {
     region: {
       latitude: 43.7315,
@@ -18,16 +20,14 @@ export default function Map() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <MapView style={styles.map} provider={PROVIDER_DEFAULT} {...mapData}>
-        <Marker
-          key={1}
-          coordinate={{
-            latitude: 43.7315,
-            longitude: -79.7624,
-          }}
-        />
-      </MapView>
-      <SelectRoute />
+      <MapView style={styles.map} provider={PROVIDER_DEFAULT} {...mapData} />
+      <ButtonField
+        title={""}
+        onPress={() => setSelectRoute(!selectRoute)}
+        variant="primary"
+        icon={<FontAwesome name="chevron-up" size={24} color="black" />}
+      />
+      {selectRoute && <SelectRoute />}
     </SafeAreaView>
   );
 }

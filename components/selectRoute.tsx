@@ -7,20 +7,21 @@ import {
   StyleSheet,
   Text,
   KeyboardAvoidingView,
+  FlatList,
+  Platform,
 } from "react-native";
 import { ButtonField } from "@/components";
 import useApiCall from "@/hooks/useApiCall";
 import { getNavigationsteps } from "@/api/maps/getNavigationSteps";
 import { SelectRouteProps } from "./types";
-import { Route } from "@/types/users";
 import {
   RouteInformation,
   AddressInfo,
   AddressCoordinates,
 } from "@/types/locationTypes";
-import { Platform } from "react-native";
-const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
-import { insertRoute } from "@/api/route/insertRoute";
+
+const keyboardVerticalOffset = Platform.OS === "ios" ? 300 : 0;
+
 const SelectRoute: React.FC<SelectRouteProps> = () => {
   const { execute } = useApiCall(getNavigationsteps);
 
@@ -36,13 +37,11 @@ const SelectRoute: React.FC<SelectRouteProps> = () => {
     setLoading(true);
     try {
       const result = await execute(sourceRef.current, destinationRef.current);
-      // console.log(result.success);
       if (result.success && result.data) {
         setAddresses(result.data.addresses);
         setCoordinatesDict(result.data.RouteInfo);
         console.log(result.data.RouteInfo);
       } else {
-        // something went wrong,,,
         console.error(result.error);
       }
     } catch (error) {
@@ -58,59 +57,70 @@ const SelectRoute: React.FC<SelectRouteProps> = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <AutoCompleteSearch placeholder="Select a Source" value={sourceRef} />
-          <View style={styles.spacing} />
-          <AutoCompleteSearch
-            placeholder="Select a Destination"
-            value={destinationRef}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <View style={styles.searchContainer}>
+            <AutoCompleteSearch
+              placeholder="Select a Source"
+              value={sourceRef}
+            />
+            <View style={styles.spacing} />
+            <AutoCompleteSearch
+              placeholder="Select a Destination"
+              value={destinationRef}
+            />
+          </View>
+
+          <ButtonField
+            title={loading ? "Loading..." : "Click Here to start Navigation"}
+            onPress={handleSearch}
+            variant="link"
+            disabled={loading}
           />
-        </View>
 
-        <ButtonField
-          title={loading ? "Loading..." : "Click Here to start Navigation"}
-          onPress={handleSearch}
-          variant="link"
-          disabled={loading}
-        />
-
-        {addresses.length > 0 && (
-          <View style={styles.addressList}>
-            {addresses.map((item, index) => {
-              const coords = getCoordinatesForAddress(item.address);
-              return (
-                <View key={index} style={styles.addressItem}>
-                  <Text style={styles.addressText}>
-                    {index + 1}. {item.type}: {item.address}
-                  </Text>
-                  {coords && (
-                    <>
-                      <Text style={styles.coordsText}>
-                        Lat: {coords.lat.toFixed(6)}, Lng:{" "}
-                        {coords.lng.toFixed(6)}
-                      </Text>
-                      <Text style={styles.coordsText}>
-                        Time: {coords.time}, Distance From Previous Step:{" "}
-                        {coords.distanceFromPrevious}
-                      </Text>
-
-                      {coords.departure && (
+          {addresses.length > 0 && (
+            <FlatList
+              data={addresses}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={styles.addressList}
+              renderItem={({ item, index }) => {
+                const coords = getCoordinatesForAddress(item.address);
+                return (
+                  <View key={index} style={styles.addressItem}>
+                    <Text style={styles.addressText}>
+                      {index + 1}. {item.type}: {item.address}
+                    </Text>
+                    {coords && (
+                      <>
                         <Text style={styles.coordsText}>
-                          Depart at {coords.departure}
+                          Lat: {coords.lat.toFixed(6)}, Lng:{" "}
+                          {coords.lng.toFixed(6)}
+                        </Text>
+                        <Text style={styles.coordsText}>
+                          Time: {coords.time}, Distance From Previous Step:{" "}
                           {coords.distanceFromPrevious}
                         </Text>
-                      )}
-                    </>
-                  )}
-                </View>
-              );
-            })}
-          </View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+
+                        {coords.departure && (
+                          <Text style={styles.coordsText}>
+                            Depart at {coords.departure}
+                          </Text>
+                        )}
+                      </>
+                    )}
+                  </View>
+                );
+              }}
+            />
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -144,15 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#666",
     fontFamily: "monospace",
-  },
-  bottomTextContainer: {
-    padding: 10,
-    backgroundColor: "#fff",
-    alignItems: "center",
-  },
-  bottomText: {
-    fontSize: 16,
-    color: "#000",
   },
 });
 
