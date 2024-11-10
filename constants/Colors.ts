@@ -4,3 +4,4 @@
  */
 export const primaryColour = "#008751";
 export const placeholderTextColor = "#666666";
+export const primaryBackendColour = "white";

@@ -17,6 +17,7 @@ export interface ButtonProps {
   style?: object;
   disabled?: boolean;
   loading?: boolean;
+  icon?: React.ReactNode;
 }
 
 export interface FormLayoutProps {
@@ -31,6 +32,4 @@ export interface CustomSnackbarProps {
   onActionPress?: () => void;
 }
 
-export interface SelectRouteProps {
-
-}
+export interface SelectRouteProps {}

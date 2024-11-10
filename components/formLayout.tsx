@@ -8,6 +8,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { FormLayoutProps } from "./types";
+import { primaryBackendColour } from "@/constants/Colors";
 
 const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 
@@ -29,10 +30,12 @@ const FormLayout: React.FC<FormLayoutProps> = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center",
+    backgroundColor: primaryBackendColour,
   },
   formContainer: {
     padding: 20,
+    backgroundColor: primaryBackendColour,
   },
   keyboardAvoidingView: {
     flex: 1,

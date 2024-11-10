@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView, Image, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout } from "@/components/index";
 import { placeholderTextColor } from "@/constants/Colors";
@@ -45,8 +52,7 @@ const ForgotPassword: React.FC = () => {
     <View style={styles.container}>
       <ActivityIndicator size="large" color={primaryColour} />
     </View>
-  )
-  : (
+  ) : (
     <FormLayout>
       <Image source={favicon} style={styles.logo} />
       <InputField
@@ -77,7 +83,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#fff",
   },
   sendButton: {
     marginTop: 20,
