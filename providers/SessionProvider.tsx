@@ -5,6 +5,7 @@ import { signInWithSession } from "@/util/setSession";
 import { getPointsData } from "@/api/users/getProfileData";
 import { getStatsData } from "@/api/users/getStatsData";
 import { getRoutesData } from "@/api/users/getRoutes";
+import { query } from "@/api/db/query";
 export interface SessionContextType {
   session: string | null;
   user: User | null;
@@ -45,9 +46,12 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
         setSession(storedSession);
         const sessionJson = JSON.parse(storedSession);
         // console.log(sessionJson);
-        const profile = await getPointsData(sessionJson.user.id);
-        const stats = await getStatsData(sessionJson.user.id);
-        const routes = await getRoutesData(sessionJson.user.id);
+
+        const {profile, stats, routes} = await query(sessionJson.user.id);
+
+        console.log(profile);
+        console.log(stats);
+        console.log(routes);
 
         await signInWithSession(sessionJson);
 
@@ -55,7 +59,7 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
           email: profile.email,
           name: profile.full_name,
           ride_count: stats.ride_count,
-          eco_score: stats.eco_core,
+          eco_score: stats.eco_score,
           total_distance: stats.distance,
           points: stats.points,
           routes: routes!,

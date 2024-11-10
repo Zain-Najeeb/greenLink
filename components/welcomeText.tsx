@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { primaryColour } from "@/constants/Colors";
 
-const WelcomeText = () => {
+interface Name {
+  name: string
+}
+
+const WelcomeText: React.FC<Name> = ({name}) => {
   const [displayText, setDisplayText] = useState("");
-  const fullText = "Welcome, John";
+  const fullText = "Welcome, " + name;
 
   useEffect(() => {
     let index = 0;

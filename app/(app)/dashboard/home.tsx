@@ -2,7 +2,6 @@ import useApiCall from "@/hooks/useApiCall";
 import "react-native-get-random-values";
 import React from "react";
 import { Text, StyleSheet, SafeAreaView, View, ScrollView } from "react-native";
-
 import { ButtonField } from "@/components";
 import { signOut } from "@/api/users/signOut";
 import { useSession } from "@/hooks/useSession";
@@ -13,10 +12,10 @@ import RecentRoutes from "@/components/recentRoutes";
 import Stats from "@/components/stats";
 import TotalPoints from "@/components/totalPoints";
 import RewardProgress from "@/components/rewardProgress";
-
 import { useGeoFence } from "@/hooks/useGeofence";
 import { GeofencePoint } from "@/types/locationTypes";
 import { useEffect } from "react";
+
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
     useApiCall(signOut);
@@ -69,15 +68,12 @@ export default function Home() {
     { id: "3", name: "Route 3", date: "2024-11-06" },
   ];
 
-  const score = 60; // Example eco score from 0 to 99
-  const totalPoints = 5000; // Example total reward points
-
   // Sample recent routes data and coupon data omitted for brevity
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <WelcomeText />
+        <WelcomeText name={user?.name!} />
         <RecentRoutes routes={recentRoutes} />
 
         {/* Eco Score and Total Reward Points Side by Side */}
