@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView, Image, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { Link } from "expo-router";
 import { ButtonField, InputField, FormLayout, CustomSnackBar } from "@/components/index";
 import { placeholderTextColor } from "@/constants/Colors";
@@ -89,7 +96,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#fff",
   },
   sendButton: {
     marginTop: 20,

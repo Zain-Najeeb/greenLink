@@ -1,5 +1,3 @@
-// rewards.tsx
-
 import React, { useState } from "react";
 import {
   View,
@@ -18,8 +16,6 @@ type Coupon = {
   storeName: string;
   expiryDate: string;
   discount: string;
-  link?: string;
-  logo?: string; // Path to the logo image
 };
 
 type RewardsProps = {
@@ -39,6 +35,36 @@ const Rewards: React.FC<RewardsProps> = ({ coupons }) => {
     Linking.openURL(url).catch((err) =>
       console.error("Failed to open URL:", err)
     );
+  };
+
+  const getLogo = (storeName: string) => {
+    switch (storeName) {
+      case "Domino's":
+        return require("../assets/images/dominosLogo.png");
+      case "Trish Juice":
+        return require("../assets/images/trish.png");
+      case "Street Bitez":
+        return require("../assets/images/streetBitez.png");
+      case "Indian Curry Express & Bar":
+        return require("../assets/images/restaurant.png");
+      default:
+        return require("../assets/images/rewardPic.png");
+    }
+  };
+
+  const getLink = (storeName: string) => {
+    switch (storeName) {
+      case "Domino's":
+        return "https://www.dominos.com";
+      case "Trish Juice":
+        return "https://www.trishjuice.com";
+      case "Street Bitez":
+        return "https://www.streetbitez.com";
+      case "Indian Curry Express & Bar":
+        return "https://www.indiancurryexpress.com";
+      default:
+        return "#";
+    }
   };
 
   return (
@@ -65,14 +91,7 @@ const Rewards: React.FC<RewardsProps> = ({ coupons }) => {
               <Text style={styles.discountText}>{item.discount}</Text>
             </View>
             <View style={styles.logoContainer}>
-              <Image
-                source={
-                  item.storeName === "Domino's"
-                    ? require("../assets/images/dominosLogo.png")
-                    : require("../assets/images/rewardPic.png")
-                }
-                style={styles.logo}
-              />
+              <Image source={getLogo(item.storeName)} style={styles.logo} />
             </View>
           </Pressable>
         )}
@@ -100,15 +119,13 @@ const Rewards: React.FC<RewardsProps> = ({ coupons }) => {
                   />
                 </Pressable>
 
-                {selectedCoupon.storeName === "Domino's" && (
-                  <Pressable
-                    onPress={() => openLink("https://www.dominos.com")}
-                  >
-                    <Text style={[styles.linkText, { color: primaryColour }]}>
-                      View Store Website
-                    </Text>
-                  </Pressable>
-                )}
+                <Pressable
+                  onPress={() => openLink(getLink(selectedCoupon.storeName))}
+                >
+                  <Text style={[styles.linkText, { color: primaryColour }]}>
+                    View Store Website
+                  </Text>
+                </Pressable>
 
                 <Pressable
                   style={[
@@ -142,7 +159,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   couponItem: {
-    flexDirection: "column", // Changed to column for vertical layout
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
     width: 250,
@@ -154,13 +171,13 @@ const styles = StyleSheet.create({
   },
   couponDetails: {
     alignItems: "center",
-    marginBottom: 10, // Add margin to make space for the logo
+    marginBottom: 10,
   },
   storeName: {
     fontSize: 16,
     fontWeight: "bold",
     color: primaryColour,
-    marginBottom: 4, // Adjusted spacing
+    marginBottom: 4,
   },
   expiryDate: {
     fontSize: 14,
@@ -173,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10, // Spacing between discount box and text
+    marginTop: 10,
   },
   discountText: {
     fontSize: 14,
@@ -181,7 +198,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   logoContainer: {
-    marginTop: 10, // Spacing above logo
+    marginTop: 10,
     alignItems: "center",
   },
   logo: {
