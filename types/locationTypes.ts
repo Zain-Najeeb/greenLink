@@ -28,7 +28,7 @@ export interface RouteInformation {
   }
   
  export interface GeofencePoint {
-  latitude: number;
+    latitude: number;
     longitude: number;
     radius: number; 
   }

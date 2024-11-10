@@ -1,6 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "@/types/users";
+import { signInWithSession } from "@/util/setSession";
+import { getPointsData } from "@/api/users/getProfileData";
+import { getStatsData } from "@/api/users/getStatsData";
+import { getRoutesData } from "@/api/route/getRoutes";
 export interface SessionContextType {
   session: string | null;
   user: User | null;
@@ -39,8 +43,26 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
       const storedSession = await AsyncStorage.getItem("supabase_session");
       if (storedSession) {
         setSession(storedSession);
-        console.log("Session is here");
-        //call setuser
+        const sessionJson = JSON.parse(storedSession);
+        // console.log(sessionJson);
+        const proifle = await getPointsData(sessionJson.user.id);
+        const stats = await getStatsData(sessionJson.user.id);
+        const recentRoutes = await getRoutesData(sessionJson.user.id);
+
+        await signInWithSession(sessionJson);
+
+        const newUser: User = {
+          id: sessionJson.user.id,
+          email: sessionJson.email,
+          name: proifle.full_name,
+          ride_count: stats.ride_count,
+          score: 0,
+          total_distance: stats.distance,
+          points: 0,
+          routes: recentRoutes,
+        };
+
+        setUser(newUser);
       } else {
         setSession(null);
         console.log("No session");

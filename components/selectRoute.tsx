@@ -6,21 +6,24 @@ import {
   View,
   StyleSheet,
   Text,
+  KeyboardAvoidingView,
 } from "react-native";
 import { ButtonField } from "@/components";
 import useApiCall from "@/hooks/useApiCall";
 import { getNavigationsteps } from "@/api/maps/getNavigationSteps";
+import { SelectRouteProps } from "./types";
+import { Route } from "@/types/users";
 import {
   RouteInformation,
   AddressInfo,
   AddressCoordinates,
 } from "@/types/locationTypes";
-import { Route } from "@/types/users";
+import { Platform } from "react-native";
+const keyboardVerticalOffset = Platform.OS === "ios" ? 20 : 0;
 import { insertRoute } from "@/api/route/insertRoute";
-import { useSession } from "@/hooks/useSession";
-
-const Navigate = () => {
+const SelectRoute: React.FC<SelectRouteProps> = () => {
   const { execute } = useApiCall(getNavigationsteps);
+
   const destinationRef = useRef<string>("");
   const sourceRef = useRef<string>("");
   const [addresses, setAddresses] = useState<AddressInfo[]>([]);
@@ -28,7 +31,6 @@ const Navigate = () => {
     {}
   );
   const [loading, setLoading] = useState(false);
-  const { user } = useSession();
 
   const handleSearch = async () => {
     setLoading(true);
@@ -36,14 +38,9 @@ const Navigate = () => {
       const result = await execute(sourceRef.current, destinationRef.current);
       // console.log(result.success);
       if (result.success && result.data) {
-        const route: Route = {
-          source: sourceRef.current,
-          destination: destinationRef.current,
-        };
-        await insertRoute(user?.id!, route);
         setAddresses(result.data.addresses);
         setCoordinatesDict(result.data.RouteInfo);
-        // console.log(result.data.RouteInfo);
+        console.log(result.data.RouteInfo);
       } else {
         // something went wrong,,,
         console.error(result.error);
@@ -148,6 +145,15 @@ const styles = StyleSheet.create({
     color: "#666",
     fontFamily: "monospace",
   },
+  bottomTextContainer: {
+    padding: 10,
+    backgroundColor: "#fff",
+    alignItems: "center",
+  },
+  bottomText: {
+    fontSize: 16,
+    color: "#000",
+  },
 });
 
-export default Navigate;
+export default SelectRoute;
