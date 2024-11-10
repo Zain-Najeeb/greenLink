@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as Location from "expo-location";
 import * as Notifications from "expo-notifications";
-
+import { sendNotification } from "@/util/sendNotification";
 import { GeofencePoint, LocationCoords } from "@/types/locationTypes";
 
 type LocationType = Location.LocationObject | null;
@@ -128,29 +128,6 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
           ? "You have entered the geofence area."
           : "You have exited the geofence area."
       );
-    }
-  };
-
-  const sendNotification = async (message: string) => {
-    try {
-      console.log("Attempting to send notification:", message);
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Geofence Alert",
-          body: message,
-          sound: true,
-          priority: "high",
-          vibrate: [0, 250, 250, 250],
-        },
-        trigger: {
-          seconds: 1,
-        },
-      });
-
-      console.log("Notification scheduled successfully");
-    } catch (error) {
-      console.error("Failed to send notification:", error);
     }
   };
 
