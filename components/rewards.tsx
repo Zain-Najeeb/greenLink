@@ -16,8 +16,6 @@ type Coupon = {
   storeName: string;
   expiryDate: string;
   discount: string;
-  link?: string;
-  logo?: string; // Path to the logo image
 };
 
 type RewardsProps = {
