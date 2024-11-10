@@ -79,7 +79,7 @@ const SelectRoute: React.FC<SelectRouteProps> = ({ isLoading, setLoading }) => {
             />
             <View style={styles.spacing} />
             <ButtonField
-              title="Search"
+              title="Select"
               onPress={handleSearch}
               style={styles.searchButton}
               loading={isLoading}
