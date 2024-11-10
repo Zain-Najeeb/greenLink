@@ -1,13 +1,18 @@
 import useApiCall from "@/hooks/useApiCall";
 import "react-native-get-random-values";
 import React from "react";
-import { Text, StyleSheet, SafeAreaView, View } from "react-native";
+import { Text, StyleSheet, SafeAreaView, View, ScrollView } from "react-native";
 
 import { ButtonField } from "@/components";
 import { signOut } from "@/api/users/signOut";
 import { useSession } from "@/hooks/useSession";
 import { Link } from "expo-router";
 import Rewards from "@/components/rewards";
+import WelcomeText from "@/components/welcomeText";
+import RecentRoutes from "@/components/recentRoutes";
+import Stats from "@/components/stats";
+import TotalPoints from "@/components/totalPoints";
+import RewardProgress from "@/components/rewardProgress";
 
 import { useGeoFence } from "@/hooks/useGeofence";
 import { GeofencePoint } from "@/types/locationTypes";
@@ -40,32 +45,68 @@ export default function Home() {
       expiryDate: "2024-12-31",
       discount: "10% off",
       link: "https://www.dominos.com",
+      logo: true,
     },
-    { storeName: "Store B", expiryDate: "2025-01-15", discount: "15% off" },
-    { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
-    { storeName: "Store D", expiryDate: "2025-02-28", discount: "20% off" },
-    { storeName: "Store C", expiryDate: "2025-02-28", discount: "20% off" },
+    {
+      storeName: "Store B",
+      expiryDate: "2025-01-15",
+      discount: "15% off",
+      link: "https://www.dominos.com",
+      logo: true,
+    },
+    {
+      storeName: "Store C",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: true,
+    },
+    {
+      storeName: "Store D",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: true,
+    },
+    {
+      storeName: "Store E",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: true,
+    },
   ];
+
+  // Sample recent routes data
+  const recentRoutes = [
+    { id: "1", name: "Route 1", date: "2024-11-08" },
+    { id: "2", name: "Route 2", date: "2024-11-07" },
+    { id: "3", name: "Route 3", date: "2024-11-06" },
+  ];
+
+  const score = 60; // Example eco score from 0 to 99
+  const totalPoints = 5000; // Example total reward points
+
+  // Sample recent routes data and coupon data omitted for brevity
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Hi! You are on the Home page because you have a session.</Text>
-      <ButtonField
-        title="Click Here to Sign Out (destroy the session)"
-        onPress={handeSignOut}
-        variant="link"
-        style={styles.Home}
-      />
+      <ScrollView>
+        <WelcomeText />
+        <RecentRoutes routes={recentRoutes} />
 
-      <Link href="./(app)/dashboard/navigate" asChild>
-        <ButtonField
-          title="Click Here to go to Navigation page"
-          onPress={() => console.log("nav pressed")}
-          variant="link"
-        />
-      </Link>
+        {/* Eco Score and Total Reward Points Side by Side */}
+        <View style={styles.statsRow}>
+          <TotalPoints points={totalPoints} />
+          <Stats score={score} />
+        </View>
 
-      <Rewards coupons={coupons} />
+        {/* Progress towards next reward */}
+        <View style={styles.rewardProgressContainer}>
+          <RewardProgress points={totalPoints} target={10000} />
+        </View>
+        <Rewards coupons={coupons} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -77,5 +118,16 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingHorizontal: 20,
+    backgroundColor: "white",
+  },
+  statsRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  rewardProgressContainer: {
+    marginTop: -30, // Minimized top margin to bring it closer to the above components
+    alignItems: "center", // Center the progress bar
   },
 });

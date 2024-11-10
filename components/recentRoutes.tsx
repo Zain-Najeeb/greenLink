@@ -1,5 +1,7 @@
+// recentRoutes.tsx
+
 import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 type Route = {
   id: string;
@@ -12,19 +14,18 @@ type RecentRoutesProps = {
 };
 
 const RecentRoutes: React.FC<RecentRoutesProps> = ({ routes }) => {
+  // Get the three most recent routes
+  const recentRoutes = routes.slice(0, 3);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recent Routes</Text>
-      <FlatList
-        data={routes}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.routeItem}>
-            <Text style={styles.routeName}>{item.name}</Text>
-            <Text style={styles.routeDate}>{item.date}</Text>
-          </View>
-        )}
-      />
+      {recentRoutes.map((route) => (
+        <View key={route.id} style={styles.routeItem}>
+          <Text style={styles.routeName}>{route.name}</Text>
+          <Text style={styles.routeDate}>{route.date}</Text>
+        </View>
+      ))}
     </View>
   );
 };

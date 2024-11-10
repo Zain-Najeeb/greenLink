@@ -11,6 +11,7 @@ import Map from "./map";
 import Account from "./account";
 import React from "react";
 import Navigate from "./navigate";
+import { insertRoute } from "@/api/route/insertRoute";
 import { useSession } from "@/hooks/useSession";
 import { GeoFenceProvider } from "@/providers/GeoFencingProvider";
 const Tab = createBottomTabNavigator();
