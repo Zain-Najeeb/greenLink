@@ -11,8 +11,8 @@ import {
 import { useGeoFence } from "@/hooks/useGeofence";
 
 export interface NavigationContextType {
-  source: LocationCoords | null;
-  destination: LocationCoords | null;
+  source: LocationCoords;
+  destination: LocationCoords;
   addresses: AddressInfo[] | null;
   routeInfo: AddressCoordinates | null;
   step: number | null;
@@ -25,8 +25,14 @@ export interface NavigationContextType {
 
 // Default values for the context
 export const NavigationContext = createContext<NavigationContextType>({
-  source: null,
-  destination: null,
+  source: {
+    latitude: 0,
+    longitude: 0,
+  },
+  destination: {
+    latitude: 0,
+    longitude: 0,
+  },
   addresses: null,
   routeInfo: null,
   step: null,
@@ -52,7 +58,7 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
   const { setGeofence } = useGeoFence();
 
   useEffect(() => {
-    if (!active) return;
+    // if (!active) return;
 
     const setNavigation = async () => {
       const geoLocations: GeofencePoint[] = [];
@@ -122,7 +128,7 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     setNavigation();
-  }, [active]);
+  }, [active, source]);
 
   useEffect(() => {
     const setNavigation = async () => {
@@ -141,8 +147,14 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <NavigationContext.Provider
       value={{
-        source: null,
-        destination: null,
+        source: {
+          latitude: 0,
+          longitude: 0,
+        },
+        destination: {
+          latitude: 0,
+          longitude: 0,
+        },
         addresses: addressInfo ?? [],
         routeInfo: routeInfo ?? null,
         step: step ?? 0,

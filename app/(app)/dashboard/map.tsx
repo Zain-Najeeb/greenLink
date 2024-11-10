@@ -8,6 +8,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { ButtonField, CustomMarker } from "@/components";
 import Entypo from "@expo/vector-icons/Entypo";
 import { pinIconColour, primaryColour } from "@/constants/Colors";
+import { useNavigation } from "@/hooks/useNavigation";
 
 const GOOGLE_MAPS_APIKEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY as string;
 
@@ -15,10 +16,14 @@ export default function Map() {
   const [selectRoute, setSelectRoute] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [hasValidRoute, setHasValidRoute] = useState<boolean>(false);
+  const { active, source, destination } = useNavigation();
 
   const route = {
-    origin: { latitude: 43.687393, longitude: -79.76181799999999 },
-    destination: { latitude: 43.691067, longitude: -79.766769 },
+    origin: { latitude: source?.latitude, longitude: source?.longitude },
+    destination: {
+      latitude: destination?.latitude,
+      longitude: destination?.longitude,
+    },
   };
   const mapData = {
     region: {
@@ -29,13 +34,19 @@ export default function Map() {
     },
   };
 
+  // useEffect(() => {
+  //   console.log(active);
+  //   console.log(destination);
+  //   console.log(source);
+  // }, [source]);
+
   // Check if route coordinates are valid
   const isValidRoute = () => {
     return (
       route.origin.latitude !== 0 &&
       route.origin.longitude !== 0 &&
-      route.destination.latitude !== 100 &&
-      route.destination.longitude !== 100
+      route.destination.latitude !== 0 &&
+      route.destination.longitude !== 0
     );
   };
 
