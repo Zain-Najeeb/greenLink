@@ -22,7 +22,7 @@ import {
 
 const keyboardVerticalOffset = Platform.OS === "ios" ? 300 : 0;
 
-const SelectRoute: React.FC<SelectRouteProps> = () => {
+const SelectRoute: React.FC<SelectRouteProps> = ({ isLoading, setLoading }) => {
   const { execute } = useApiCall(getNavigationsteps);
 
   const destinationRef = useRef<string>("");
@@ -31,7 +31,6 @@ const SelectRoute: React.FC<SelectRouteProps> = () => {
   const [coordinatesDict, setCoordinatesDict] = useState<AddressCoordinates>(
     {}
   );
-  const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -74,16 +73,17 @@ const SelectRoute: React.FC<SelectRouteProps> = () => {
               placeholder="Select a Destination"
               value={destinationRef}
             />
+            <View style={styles.spacing} />
+            <ButtonField
+              title="Search"
+              onPress={handleSearch}
+              style={styles.searchButton}
+              loading={isLoading}
+              disabled={isLoading}
+            />
           </View>
 
-          <ButtonField
-            title={loading ? "Loading..." : "Click Here to start Navigation"}
-            onPress={handleSearch}
-            variant="link"
-            disabled={loading}
-          />
-
-          {addresses.length > 0 && (
+          {/* {addresses.length > 0 && (
             <FlatList
               data={addresses}
               keyExtractor={(item, index) => index.toString()}
@@ -117,7 +117,7 @@ const SelectRoute: React.FC<SelectRouteProps> = () => {
                 );
               }}
             />
-          )}
+          )} */}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -130,6 +130,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   searchContainer: {
+    marginTop: 20,
+  },
+  searchButton: {
     marginTop: 20,
   },
   spacing: {

@@ -47,7 +47,7 @@ const CustomButton = forwardRef(
           <ActivityIndicator color={variant === "primary" ? "#fff" : "#000"} />
         ) : (
           <View>
-            {icon && <View>{icon}</View>}
+            {icon && <View style={{ backgroundColor: "white" }}>{icon}</View>}
             <Text style={textStyles}>{title}</Text>
           </View>
         )}

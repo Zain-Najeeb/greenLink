@@ -30,7 +30,10 @@ export interface CustomSnackbarProps {
   onDismiss: () => void;
   actionLabel?: string;
   onActionPress?: () => void;
-  style?: object; 
+  style?: object;
 }
 
-export interface SelectRouteProps {}
+export interface SelectRouteProps {
+  isLoading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
