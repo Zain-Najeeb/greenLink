@@ -34,6 +34,7 @@ const Navigate = () => {
     setLoading(true);
     try {
       const result = await execute(sourceRef.current, destinationRef.current);
+      console.log(sourceRef.current, destinationRef.current);
       // console.log(result.success);
       if (result.success && result.data) {
         const route: Route = {

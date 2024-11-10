@@ -7,6 +7,8 @@ export const signOut = async () => {
     console.error("Error signing out:", error.message);
   } else {
     await AsyncStorage.removeItem("supabase_session");
+    await AsyncStorage.removeItem("routeInfo");
+    await AsyncStorage.removeItem("addresses");
     console.log("User signed out successfully");
   }
 }

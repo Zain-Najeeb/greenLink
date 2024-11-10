@@ -19,12 +19,13 @@ import {
   AddressInfo,
   AddressCoordinates,
 } from "@/types/locationTypes";
+import { useNavigation } from "@/hooks/useNavigation";
 
 const keyboardVerticalOffset = Platform.OS === "ios" ? 300 : 0;
 
 const SelectRoute: React.FC<SelectRouteProps> = () => {
   const { execute } = useApiCall(getNavigationsteps);
-
+  const { setActive } = useNavigation();
   const destinationRef = useRef<string>("");
   const sourceRef = useRef<string>("");
   const [addresses, setAddresses] = useState<AddressInfo[]>([]);
@@ -40,7 +41,8 @@ const SelectRoute: React.FC<SelectRouteProps> = () => {
       if (result.success && result.data) {
         setAddresses(result.data.addresses);
         setCoordinatesDict(result.data.RouteInfo);
-        console.log(result.data.RouteInfo);
+
+        setActive((prev) => !prev);
       } else {
         console.error(result.error);
       }

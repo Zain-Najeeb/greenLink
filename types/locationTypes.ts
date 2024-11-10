@@ -31,6 +31,8 @@ export interface RouteInformation {
     latitude: number;
     longitude: number;
     radius: number; 
+    step: number , 
+    message: string,
   }
 
   

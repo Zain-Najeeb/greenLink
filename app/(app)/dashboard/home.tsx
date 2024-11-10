@@ -20,17 +20,6 @@ import { useEffect } from "react";
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
     useApiCall(signOut);
-  const GeoFences: GeofencePoint[] = [
-    {
-      latitude: 43.684349176009476,
-      longitude: -79.76053713536464,
-      radius: 30,
-    },
-  ];
-  const { setGeofence } = useGeoFence();
-  useEffect(() => {
-    setGeofence(GeoFences);
-  }, []);
 
   const { session, user, isLoading, destroySession } = useSession();
   const handeSignOut = async () => {
