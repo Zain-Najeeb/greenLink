@@ -41,37 +41,30 @@ export default function Home() {
   // Sample coupon data
   const coupons = [
     {
+      storeName: "Trish Juice",
+      expiryDate: "2024-12-31",
+      discount: "10% off",
+      link: "https://trishjuice.com/",
+      logo: true,
+    },
+    {
+      storeName: "Street Bitez",
+      expiryDate: "2025-01-15",
+      discount: "15% off",
+      link: "https://streetbitez.ca/",
+      logo: true,
+    },
+    {
+      storeName: "Indian Curry Express & Bar",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://indiancurry.ca/",
+      logo: true,
+    },
+    {
       storeName: "Domino's",
       expiryDate: "2024-12-31",
       discount: "10% off",
-      link: "https://www.dominos.com",
-      logo: true,
-    },
-    {
-      storeName: "Store B",
-      expiryDate: "2025-01-15",
-      discount: "15% off",
-      link: "https://www.dominos.com",
-      logo: true,
-    },
-    {
-      storeName: "Store C",
-      expiryDate: "2025-02-28",
-      discount: "20% off",
-      link: "https://www.dominos.com",
-      logo: true,
-    },
-    {
-      storeName: "Store D",
-      expiryDate: "2025-02-28",
-      discount: "20% off",
-      link: "https://www.dominos.com",
-      logo: true,
-    },
-    {
-      storeName: "Store E",
-      expiryDate: "2025-02-28",
-      discount: "20% off",
       link: "https://www.dominos.com",
       logo: true,
     },
