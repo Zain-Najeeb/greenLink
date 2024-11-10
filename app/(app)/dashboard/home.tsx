@@ -32,7 +32,7 @@ export default function Home() {
   //   setGeofence(GeoFences);
   // }, []);
 
-  const { session, isLoading, destroySession } = useSession();
+  const { session, user, isLoading, destroySession } = useSession();
   const handeSignOut = async () => {
     destroySession();
     await execute();
@@ -82,13 +82,13 @@ export default function Home() {
 
         {/* Eco Score and Total Reward Points Side by Side */}
         <View style={styles.statsRow}>
-          <TotalPoints points={totalPoints} />
-          <Stats score={score} />
+          <TotalPoints points={user?.points!} />
+          <Stats score={user?.eco_score!} />
         </View>
 
         {/* Progress towards next reward */}
         <View style={styles.rewardProgressContainer}>
-          <RewardProgress points={totalPoints} target={10000} />
+          <RewardProgress points={user?.points!} target={10000} />
         </View>
         <Rewards coupons={coupons} />
       </ScrollView>

@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { User } from "@/types/users";
+import { User, Stats, Route } from "@/types/users";
 import { signInWithSession } from "@/util/setSession";
 import { getPointsData } from "@/api/users/getProfileData";
 import { getStatsData } from "@/api/users/getStatsData";
@@ -45,19 +45,23 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
         setSession(storedSession);
         const sessionJson = JSON.parse(storedSession);
         // console.log(sessionJson);
-        const proifle = await getPointsData(sessionJson.user.id);
+        const profile = await getPointsData(sessionJson.user.id);
         const stats = await getStatsData(sessionJson.user.id);
-        const recentRoutes = await getRoutesData(sessionJson.user.id);
+        const routes = await getRoutesData(sessionJson.user.id);
+
         await signInWithSession(sessionJson);
+
         const newUser: User = {
-          email: sessionJson.email,
-          name: proifle.full_name,
+          email: profile.email,
+          name: profile.full_name,
           ride_count: stats.ride_count,
-          score: 0,
+          eco_score: stats.eco_core,
           total_distance: stats.distance,
-          points: 0,
-          routes: recentRoutes,
+          points: stats.points,
+          routes: routes!,
         };
+
+        setUser(newUser);
       } else {
         setSession(null);
         console.log("No session");
