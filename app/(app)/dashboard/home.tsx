@@ -19,17 +19,6 @@ import { useEffect } from "react";
 export default function Home() {
   const { execute, data, error, isSuccess, isError, reset } =
     useApiCall(signOut);
-  const GeoFences: GeofencePoint[] = [
-    {
-      latitude: 43.684349176009476,
-      longitude: -79.76053713536464,
-      radius: 1000,
-    },
-  ];
-  const { setGeofence } = useGeoFence();
-  // useEffect(() => {
-  //   setGeofence(GeoFences);
-  // }, []);
 
   const { session, user, isLoading, destroySession } = useSession();
   const handeSignOut = async () => {
@@ -58,17 +47,44 @@ export default function Home() {
       storeName: "Domino's",
       expiryDate: "2024-12-31",
       discount: "10% off",
+      link: "https://www.dominos.com",
+      logo: "",
+    },
+    {
+      storeName: "Store B",
+      expiryDate: "2025-01-15",
+      discount: "15% off",
+      link: "https://www.dominos.com",
+      logo: "",
+    },
+    {
+      storeName: "Store C",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: "",
+    },
+    {
+      storeName: "Store D",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: "",
+    },
+    {
+      storeName: "Store E",
+      expiryDate: "2025-02-28",
+      discount: "20% off",
+      link: "https://www.dominos.com",
+      logo: "",
     },
   ];
 
-  // Sample recent routes data
   const recentRoutes = [
     { id: "1", name: "Route 1", date: "2024-11-08" },
     { id: "2", name: "Route 2", date: "2024-11-07" },
     { id: "3", name: "Route 3", date: "2024-11-06" },
   ];
-
-  // Sample recent routes data and coupon data omitted for brevity
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,7 +95,7 @@ export default function Home() {
         {/* Eco Score and Total Reward Points Side by Side */}
         <View style={styles.statsRow}>
           <TotalPoints points={user?.points!} />
-          <Stats score={user?.eco_score!} />
+          <Stats score={user?.score!} />
         </View>
 
         {/* Progress towards next reward */}

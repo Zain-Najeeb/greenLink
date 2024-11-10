@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, SafeAreaView, View, FlatList } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons"; // Importing icons for ranks
+import { getStatsData } from "@/api/users/getStatsData";
 
 // Define user structure for leaderboard data
 interface User {

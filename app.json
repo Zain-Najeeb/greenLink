@@ -14,8 +14,9 @@
     },
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.greenlink", 
       "config": {
-        "googleMapsApiKey": "AIzaSyD1kRCB5LVjLfwbrTs596pTzuMwLuh4BjI" 
+        "googleMapsApiKey": "AIzaSyAYhybNjE_0VZCUHDVna6K5aGEANE4tIFs"
       },
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "We need access to your location to provide nearby places.",
@@ -23,6 +24,7 @@
       }
     },
     "android": {
+      "package": "com.yourcompany.greenlink", 
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -30,7 +32,12 @@
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "POST_NOTIFICATIONS"
-      ]
+      ],
+      "config": { 
+        "googleMaps": {
+          "apiKey": "AIzaSyAYhybNjE_0VZCUHDVna6K5aGEANE4tIFs"
+        }
+      }
     },
     "web": {
       "bundler": "metro",
