@@ -1,24 +1,38 @@
 import React from "react";
-import { Text, StyleSheet, SafeAreaView, Button, View, Alert } from "react-native";
+import { SafeAreaView, View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { useSession } from "@/hooks/useSession";
+import useApiCall from "@/hooks/useApiCall";
+import { signOut } from "@/api/users/signOut";
+import Leaderboard from "@/components/leaderBoard";
 
 export default function Account() {
+  const { execute } = useApiCall(signOut);
+  const { destroySession } = useSession();
 
-  const handleLogOff = () => {
-    Alert.alert("Log Off", "You have been logged off.");
-    // Add additional log-off logic here, such as clearing user data or navigating to the login screen
-  };
-
-  const handleViewProfile = () => {
-    Alert.alert("Profile", "Navigate to Profile Screen");
-    // Add navigation to the profile screen here
+  const handleLogOut = async () => {
+    console.log("User logged out");
+    destroySession();
+    await execute();
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.headingText}>Hi, You are on the Account page</Text>
-      <View style={styles.buttonContainer}>
-        <Button title="View Profile" onPress={handleViewProfile} />
-        <Button title="Log Off" onPress={handleLogOff} color="red" />
+      {/* Leaderboard */}
+      <Leaderboard />
+
+      {/* Log Out Option */}
+      <View style={styles.bottomContainer}>
+        <TouchableOpacity style={styles.option} onPress={handleLogOut}>
+          <View style={styles.optionLeft}>
+            <Icon name="logout" size={24} color="#6c63ff" />
+            <View style={styles.optionText}>
+              <Text style={styles.optionTitle}>Log Out</Text>
+              <Text style={styles.optionSubtitle}>Further secure your account for safety</Text>
+            </View>
+          </View>
+          <Icon name="chevron-right" size={24} color="gray" />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -27,16 +41,35 @@ export default function Account() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
+    paddingHorizontal: 16,
+    paddingTop: 6,
+  },
+  bottomContainer: {
+    paddingBottom: 6,
+    marginTop: 20,
+  },
+  option: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
+    justifyContent: "space-between",
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: "#eee",
   },
-  headingText: {
-    fontSize: 20,
-    marginBottom: 20,
+  optionLeft: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  buttonContainer: {
-    width: "80%",
-    marginVertical: 10,
+  optionText: {
+    marginLeft: 12,
+  },
+  optionTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  optionSubtitle: {
+    fontSize: 12,
+    color: "gray",
   },
 });

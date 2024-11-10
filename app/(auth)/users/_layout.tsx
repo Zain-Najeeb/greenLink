@@ -1,7 +1,6 @@
 import { Redirect, Stack } from "expo-router";
 import { primaryColour } from "@/constants/Colors";
 import { useSession } from "@/hooks/useSession";
-
 export default function RootLayout() {
   const { session } = useSession();
   const headerOptions = (headerTitle: string) => {

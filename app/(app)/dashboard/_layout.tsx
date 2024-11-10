@@ -12,71 +12,78 @@ import Account from "./account";
 import React from "react";
 import Navigate from "./navigate";
 import { insertRoute } from "@/api/route/insertRoute";
+import { GeoFenceProvider } from "@/providers/GeoFencingProvider";
 import { useSession } from "@/hooks/useSession";
 const Tab = createBottomTabNavigator();
 
 export default function RootLayout() {
-  const {session} = useSession(); 
+  const { session } = useSession();
   return session ? (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          tabBarActiveTintColor: primaryColour,
-          headerLeft: () => (
-            <Image
-              source={require("../../../assets/images/favicon.png")}
-              style={styles.headerImage}
-            />
-          ),
-          headerTitle: "",
-          headerTitleAlign: "center", // Centers the title if you have one
-        }}
-      >
-        <Tab.Screen
-          name="Map"
-          component={Map}
-          options={{
-            tabBarLabel: "Map",
-            tabBarIcon: ({ color }) => (
-              <Fontisto name="map-marker-alt" color={color} size={26} />
+    <GeoFenceProvider>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            tabBarActiveTintColor: primaryColour,
+            headerLeft: () => (
+              <Image
+                source={require("../../../assets/images/favicon.png")}
+                style={styles.headerImage}
+              />
             ),
+            headerTitle: "",
+            headerTitleAlign: "center", // Centers the title if you have one
           }}
-        />
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name="home" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Account"
-          component={Account}
-          options={{
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="account" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Navigate"
-          component={Navigate}
-          options={{
-            tabBarLabel: "Navigate",
-            tabBarIcon: ({ color }) => (
-              <Fontisto name="navigate" color={color} size={26} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+        >
+          <Tab.Screen
+            name="Map"
+            component={Map}
+            options={{
+              tabBarLabel: "Map",
+              tabBarIcon: ({ color }) => (
+                <Fontisto name="map-marker-alt" color={color} size={26} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarLabel: "Home",
+              tabBarIcon: ({ color }) => (
+                <MaterialIcons name="home" color={color} size={26} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Account"
+            component={Account}
+            options={{
+              tabBarLabel: "Profile",
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Navigate"
+            component={Navigate}
+            options={{
+              tabBarLabel: "Navigate",
+              tabBarIcon: ({ color }) => (
+                <Fontisto name="navigate" color={color} size={26} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </GeoFenceProvider>
   ) : (
-    <Redirect href="/(auth)/users"/>
+    <Redirect href="/(auth)/users" />
   );
 }
 
