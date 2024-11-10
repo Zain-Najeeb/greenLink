@@ -33,6 +33,12 @@ export default function Map() {
     },
   };
 
+  // useEffect(() => {
+  //   console.log(active);
+  //   console.log(destination);
+  //   console.log(source);
+  // }, [source]);
+
   // Check if route coordinates are valid
   const isValidRoute = () => {
     return active;

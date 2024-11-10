@@ -10,8 +10,8 @@ import {
 import { useGeoFence } from "@/hooks/useGeofence";
 
 export interface NavigationContextType {
-  source: LocationCoords | null;
-  destination: LocationCoords | null;
+  source: LocationCoords;
+  destination: LocationCoords;
   addresses: AddressInfo[] | null;
   routeInfo: AddressCoordinates | null;
   step: number | null;
@@ -23,8 +23,14 @@ export interface NavigationContextType {
 }
 
 export const NavigationContext = createContext<NavigationContextType>({
-  source: null,
-  destination: null,
+  source: {
+    latitude: 0,
+    longitude: 0,
+  },
+  destination: {
+    latitude: 0,
+    longitude: 0,
+  },
   addresses: null,
   routeInfo: null,
   step: null,
