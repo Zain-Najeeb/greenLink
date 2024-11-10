@@ -29,6 +29,7 @@ export interface CustomSnackbarProps {
   onDismiss: () => void;
   actionLabel?: string;
   onActionPress?: () => void;
+  style?: object; 
 }
 
 export interface SelectRouteProps {

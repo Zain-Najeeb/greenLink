@@ -12,12 +12,16 @@ import Account from "./account";
 import React from "react";
 import Navigate from "./navigate";
 import { insertRoute } from "@/api/route/insertRoute";
+import { useSession } from "@/hooks/useSession"; // Adjust the path based on your project structure
+import { GeoFenceProvider } from "@/providers/GeoFencingProvider";
 const Tab = createBottomTabNavigator();
 
 export default function RootLayout() {
   const {session} = useSession(); 
+  
   return session ? (
-    <NavigationContainer>
+    <GeoFenceProvider>
+ <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -74,6 +78,10 @@ export default function RootLayout() {
         />
       </Tab.Navigator>
     </NavigationContainer>
+
+    </GeoFenceProvider>
+
+   
   ) : (
     <Redirect href="/(auth)/users"/>
   );

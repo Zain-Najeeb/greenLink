@@ -1,24 +1,26 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { Link } from "expo-router";
-import { ButtonField, InputField, FormLayout } from "@/components/index";
+import { ButtonField, InputField, FormLayout, CustomSnackBar } from "@/components/index";
 
 import useApiCall from "@/hooks/useApiCall";
 import createUser from "@/api/users/signup";
 import { primaryColour } from "@/constants/Colors";
 import { useSession } from "@/hooks/useSession";
 import loginUser from "@/api/users/signin";
+import { useSnackbar } from "@/hooks/useSnackbar";
 
 const favicon = require("@/assets/images/favicon.png");
+
 interface FormErrors {
   email?: string;
   password?: string;
 }
 
 const SignInScreen: React.FC = () => {
-  const { execute, data, error, isLoading, isSuccess, isError, reset } =
-    useApiCall(loginUser);
+  const { execute, data, error, isLoading, isSuccess, isError, reset } = useApiCall(loginUser);
   const { newSession } = useSession();
+  const { showSnackbar } = useSnackbar();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -30,14 +32,22 @@ const SignInScreen: React.FC = () => {
 
     if (!email) {
       newErrors.email = "Email is required";
+      showSnackbar("Email is required");
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email is invalid";
+      showSnackbar("Please enter a valid email");
     }
 
     if (!password) {
       newErrors.password = "Password is required";
+      showSnackbar("Password is required");
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
+      showSnackbar("Password must be at least 6 characters");
+    }
+
+    if (!email && !password) {
+      showSnackbar("Invalid Sign In");
     }
 
     setErrors(newErrors);
@@ -50,13 +60,11 @@ const SignInScreen: React.FC = () => {
     setLoading(true);
     try {
       const data = await execute({ email, password });
-
       if (data.data) {
         newSession(data.data);
       }
-      
-      // await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
     } catch (error) {
+      // Handle error (if needed)
     } finally {
       setLoading(false);
     }
@@ -82,7 +90,6 @@ const SignInScreen: React.FC = () => {
         keyboardType="email-address"
         error={errors.email}
       />
-
       <InputField
         label="Password"
         value={password}
@@ -127,7 +134,7 @@ const SignInScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0,
     justifyContent: "center",
     backgroundColor: "#fff",
   },

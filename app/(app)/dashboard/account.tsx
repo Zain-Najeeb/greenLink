@@ -5,15 +5,18 @@ import { useSession } from "@/hooks/useSession";
 import useApiCall from "@/hooks/useApiCall";
 import { signOut } from "@/api/users/signOut";
 import Leaderboard from "@/components/leaderBoard";
+import { useSnackbar } from "@/hooks/useSnackbar";
 
 export default function Account() {
   const { execute } = useApiCall(signOut);
   const { destroySession } = useSession();
+  const { showSnackbar } = useSnackbar();
 
   const handleLogOut = async () => {
     console.log("User logged out");
     destroySession();
     await execute();
+    showSnackbar("You are now signed out");
   };
 
   return (

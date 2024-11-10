@@ -78,14 +78,6 @@ export default function Leaderboard() {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         scrollEnabled={false}
-        ListFooterComponent={
-          userScore && (
-            <View style={styles.userScoreContainer}>
-              <Text style={styles.userScoreTitle}>Your Score: {userScore.name}</Text>
-              <Text style={styles.userScore}>{userScore.points} pts</Text>
-            </View>
-          )
-        }
       />
     </SafeAreaView>
   );

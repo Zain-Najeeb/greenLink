@@ -3,6 +3,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { placeholderTextColor } from "@/constants/Colors";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons"; // Make sure to install this package
+import { useSnackbar } from "@/hooks/useSnackbar";
 
 type LocationAutocompleteProps = {
   placeholder: string;
@@ -19,6 +20,8 @@ const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
     setInputValue(""); // Clear the input value
     value.current = ""; // Reset the value prop
   };
+  const { showSnackbar } = useSnackbar();
+
 
   return (
     <View style={styles.container}>
@@ -53,7 +56,8 @@ const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
                 setInputValue(data.description);
                 value.current = data.description;
               } else {
-                console.log("Location outside Brampton was selected");
+                // console.log("Location outside Brampton was selected");
+                showSnackbar("Please choose a location within Brampton");
               }
             }
           }}

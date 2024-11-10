@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView, Image, ActivityIndicator } from "react-native";
 import { Link } from "expo-router";
-import { ButtonField, InputField, FormLayout } from "@/components/index";
+import { ButtonField, InputField, FormLayout, CustomSnackBar } from "@/components/index";
 import { placeholderTextColor } from "@/constants/Colors";
 import { primaryColour } from "@/constants/Colors";
+import { useSnackbar } from "@/hooks/useSnackbar";
 const favicon = require("@/assets/images/favicon.png");
+
 interface FormErrors {
   email?: string;
 }
@@ -13,14 +15,20 @@ const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<FormErrors>({});
-
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const {showSnackbar} = useSnackbar()
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
     if (!email) {
       newErrors.email = "Email is required";
+      showSnackbar("Please Enter an Email");
+     
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email is invalid";
+      showSnackbar("Please Enter a Valid Email");
+     
     }
 
     setErrors(newErrors);
@@ -34,8 +42,11 @@ const ForgotPassword: React.FC = () => {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
+      setSnackbarMessage("Verification email sent!");
+      // setSnackbarVisible(true); // Show success message in snackbar
+      showSnackbar("Email Sent", );
     } catch (error) {
-      //Error
+      // Handle error (if needed)
     } finally {
       setLoading(false);
     }
@@ -45,8 +56,7 @@ const ForgotPassword: React.FC = () => {
     <View style={styles.container}>
       <ActivityIndicator size="large" color={primaryColour} />
     </View>
-  )
-  : (
+  ) : (
     <FormLayout>
       <Image source={favicon} style={styles.logo} />
       <InputField
@@ -69,6 +79,8 @@ const ForgotPassword: React.FC = () => {
         loading={loading}
         disabled={loading}
       />
+    
+
     </FormLayout>
   );
 };

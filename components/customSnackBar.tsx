@@ -30,11 +30,20 @@ const CustomSnackbar: React.FC<CustomSnackbarProps> = ({
 const styles = StyleSheet.create({
   snackbar: {
     position: 'absolute',
-    left: 21,
-    right: 25,
+    // left: 21,
+    // right: 25,
     backgroundColor: 'black', 
-	marginTop: 30,
-	marginBottom: 10,
+	
+	bottom: 40, 
+	left: 0,
+	right: 0, 
+
+  },
+  visible: {
+    opacity: 1,
+  },
+  hidden: {
+    opacity: 0,
   },
 });
 
