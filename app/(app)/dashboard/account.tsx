@@ -1,10 +1,17 @@
 import React from "react";
-import { SafeAreaView, View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useSession } from "@/hooks/useSession";
 import useApiCall from "@/hooks/useApiCall";
 import { signOut } from "@/api/users/signOut";
 import Leaderboard from "@/components/leaderBoard";
+import { primaryColour } from "@/constants/Colors";
 
 export default function Account() {
   const { execute } = useApiCall(signOut);
@@ -25,10 +32,12 @@ export default function Account() {
       <View style={styles.bottomContainer}>
         <TouchableOpacity style={styles.option} onPress={handleLogOut}>
           <View style={styles.optionLeft}>
-            <Icon name="logout" size={24} color="#6c63ff" />
+            <Icon name="logout" size={24} color={primaryColour} />
             <View style={styles.optionText}>
               <Text style={styles.optionTitle}>Log Out</Text>
-              <Text style={styles.optionSubtitle}>Further secure your account for safety</Text>
+              <Text style={styles.optionSubtitle}>
+                Further secure your account for safety
+              </Text>
             </View>
           </View>
           <Icon name="chevron-right" size={24} color="gray" />
