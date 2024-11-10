@@ -4,7 +4,7 @@ import { User } from "@/types/users";
 import { signInWithSession } from "@/util/setSession";
 import { getPointsData } from "@/api/users/getProfileData";
 import { getStatsData } from "@/api/users/getStatsData";
-import { getRoutesData } from "@/api/users/getRoutes";
+import { getRoutesData } from "@/api/route/getRoutes";
 export interface SessionContextType {
   session: string | null;
   user: User | null;
