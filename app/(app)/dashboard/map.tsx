@@ -18,13 +18,9 @@ export default function Map() {
       longitudeDelta: 0.1,
     },
   };
-
   useEffect(() => {
-    if (!isLoading) {
-      setSelectRoute(false);
-    }
+    setSelectRoute(false);
   }, [isLoading]);
-
   return (
     <SafeAreaView style={styles.container}>
       <MapView style={styles.map} provider={PROVIDER_DEFAULT} {...mapData} />
