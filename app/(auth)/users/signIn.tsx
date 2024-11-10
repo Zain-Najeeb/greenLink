@@ -7,6 +7,7 @@ import useApiCall from "@/hooks/useApiCall";
 import loginUser from "@/api/users/signin";
 
 import { useSession } from "@/hooks/useSession";
+import { primaryColour } from "@/constants/Colors";
 const favicon = require("@/assets/images/favicon.png");
 interface FormErrors {
   email?: string;
@@ -50,7 +51,6 @@ const SignInScreen: React.FC = () => {
       const data = await execute({ email, password });
       if (data.data) {
         newSession(data.data);
-        creat;
       }
 
       // await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay
@@ -62,7 +62,7 @@ const SignInScreen: React.FC = () => {
 
   return loading ? (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#00ff00" />
+      <ActivityIndicator size="large" color={primaryColour} />
     </View>
   ) : (
     <FormLayout>
