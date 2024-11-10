@@ -5,3 +5,4 @@
 export const primaryColour = "#008751";
 export const placeholderTextColor = "#666666";
 export const primaryBackendColour = "white";
+export const pinIconColour = "#FF3B30";
