@@ -9,6 +9,10 @@ export const insertUser = async (userId: string, email: string, fullName: string
             full_name: fullName
         })
         .select()
+
+    if(error) {
+        throw new Error(error.message);
+    }
 };
 
 export const insertStats = async (userId: string) => {
@@ -21,4 +25,8 @@ export const insertStats = async (userId: string) => {
             ride_count: 0
         })
         .select()
+
+    if(error) {
+        throw new Error(error.message);
+    }
 };
