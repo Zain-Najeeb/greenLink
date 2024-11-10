@@ -45,7 +45,7 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
         const sessionJson = JSON.parse(storedSession);
         // console.log(sessionJson);
 
-        const {profile, stats, routes} = await query(sessionJson.user.id);
+        const { profile, stats, routes } = await query(sessionJson.user.id);
 
         await signInWithSession(sessionJson);
 

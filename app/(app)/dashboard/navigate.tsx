@@ -17,7 +17,8 @@ import {
 } from "@/types/locationTypes";
 import { Route } from "@/types/users";
 import { insertRoute } from "@/api/route/insertRoute";
-insertRoute;
+import { useSession } from "@/hooks/useSession";
+
 const Navigate = () => {
   const { execute } = useApiCall(getNavigationsteps);
   const destinationRef = useRef<string>("");
@@ -27,18 +28,20 @@ const Navigate = () => {
     {}
   );
   const [loading, setLoading] = useState(false);
+  const { user } = useSession();
 
   const handleSearch = async () => {
     setLoading(true);
     try {
       const result = await execute(sourceRef.current, destinationRef.current);
+      console.log(sourceRef.current, destinationRef.current);
       // console.log(result.success);
       if (result.success && result.data) {
         const route: Route = {
           source: sourceRef.current,
           destination: destinationRef.current,
         };
-        await insertRoute(route);
+        await insertRoute(user?.id!, route);
         setAddresses(result.data.addresses);
         setCoordinatesDict(result.data.RouteInfo);
         // console.log(result.data.RouteInfo);

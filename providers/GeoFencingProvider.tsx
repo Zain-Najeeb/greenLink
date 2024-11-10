@@ -1,7 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 import * as Location from "expo-location";
 import * as Notifications from "expo-notifications";
-
+import { sendNotification } from "@/util/sendNotification";
 import { GeofencePoint, LocationCoords } from "@/types/locationTypes";
 
 type LocationType = Location.LocationObject | null;
@@ -27,13 +33,38 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
   const [geofence, setGeofence] = useState<GeofencePoint[] | null>(null);
   const [isInGeofence, setIsInGeofence] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [lastNotificationState, setLastNotificationState] = useState<
-    boolean | null
-  >(null);
+  const notificationRef = useRef<boolean>(false);
+  const [trigger, setTrigger] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!trigger) return;
+
     let locationSubscription: Location.LocationSubscription | null = null;
+
+    const watchingGeo = async () => {
+      locationSubscription = await Location.watchPositionAsync(
+        {
+          // accuracy: Location.Accuracy.BestForNavigation,
+          distanceInterval: 1,
+        },
+        (newLocation) => {
+          setLocation(newLocation);
+          if (geofence) {
+            checkIfInGeofence(newLocation.coords, geofence);
+          }
+        }
+      );
+    };
+    watchingGeo();
+    return () => {
+      console.log("Unmounted");
+      locationSubscription?.remove();
+    };
+  }, [trigger]);
+
+  useEffect(() => {
     const setupPermissions = async () => {
+      console.log("RUNNIG");
       try {
         const locationStatus =
           await Location.requestForegroundPermissionsAsync();
@@ -48,34 +79,14 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
           setErrorMsg("Permission to send notifications was denied");
           return;
         }
-
-        const currentLocation = await Location.getCurrentPositionAsync({});
-        setLocation(currentLocation);
-
-        locationSubscription = await Location.watchPositionAsync(
-          {
-            accuracy: Location.Accuracy.High,
-            timeInterval: 5000,
-            distanceInterval: 5,
-          },
-          (newLocation) => {
-            setLocation(newLocation);
-            if (geofence) {
-              checkIfInGeofence(newLocation.coords, geofence);
-            }
-          }
-        );
+        setTrigger(true);
       } catch (error) {
         setErrorMsg(
           error instanceof Error ? error.message : "An error occurred"
         );
       }
     };
-
     setupPermissions();
-    return () => {
-      locationSubscription?.remove();
-    };
   }, [geofence]);
 
   const isWithinRadius = (
@@ -102,18 +113,24 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c; // Distance in meters
 
+    // console.log(distance);
+
     return distance <= geofencePoint.radius;
   };
 
-  const checkIfInGeofence = (
+  const checkIfInGeofence = async (
     userLocation: LocationCoords,
     geofencePoints: GeofencePoint[]
-  ): void => {
+  ): Promise<void> => {
     let inside = false;
-
+    let message = "";
+    let step = 0;
     for (const point of geofencePoints) {
       if (isWithinRadius(userLocation, point)) {
         inside = true;
+        message = point.message;
+        step = point.step;
+        console.log("inside");
         break;
       }
     }
@@ -121,36 +138,16 @@ export function GeoFenceProvider({ children }: { children: React.ReactNode }) {
     setIsInGeofence(inside);
 
     // Only send notification if the state has changed and it's different from the last notification
-    if (lastNotificationState !== inside) {
-      setLastNotificationState(inside);
-      sendNotification(
-        inside
-          ? "You have entered the geofence area."
-          : "You have exited the geofence area."
-      );
-    }
-  };
+    if (notificationRef.current !== inside) {
+      notificationRef.current = inside;
 
-  const sendNotification = async (message: string) => {
-    try {
-      console.log("Attempting to send notification:", message);
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Geofence Alert",
-          body: message,
-          sound: true,
-          priority: "high",
-          vibrate: [0, 250, 250, 250],
-        },
-        trigger: {
-          seconds: 1,
-        },
-      });
-
-      console.log("Notification scheduled successfully");
-    } catch (error) {
-      console.error("Failed to send notification:", error);
+      await sendNotification(inside ? message : "Have a safe travel");
+      if (step) {
+        //last geofence
+      }
+      if (!inside) {
+        setTrigger((prev) => !prev);
+      }
     }
   };
 

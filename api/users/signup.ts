@@ -17,13 +17,13 @@ const createUser = async ( {email, password, options} :CreateUserProps) : Promis
         throw new Error(error.message);
     }
 
-    if(!data?.session || !data?.user?.id || !options?.data?.full_name) {
+    if(!data?.session || !options?.data?.full_name) {
         console.error("Data wasn't returned correctly");
         throw new Error("Data wasn't returned correctly");
     }
 
-    await insertUser(data.user.id, email, options.data.full_name);
-    await insertStats(data.user.id);
+    await insertUser(email, options.data.full_name);
+    await insertStats();
     
     await AsyncStorage.setItem('supabase_session', JSON.stringify(data.session));
     console.log('User created and session saved');

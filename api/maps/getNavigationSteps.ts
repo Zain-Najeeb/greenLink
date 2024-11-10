@@ -1,6 +1,8 @@
 
 import { getAddressFromCoordinates } from "./getCoords";
 import { AddressInfo, AddressCoordinates,  NavigationResult} from "@/types/locationTypes";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const getNavigationsteps = async (
   sourceAddress: string,
   destinationAddress: string
@@ -16,6 +18,7 @@ export const getNavigationsteps = async (
     process.env.EXPO_PUBLIC_GOOGLE_API_KEY
   }`;
   try {
+    // console.log(googleMapsUrl)
     const response = await fetch(googleMapsUrl);
     const data = await response.json();
 
@@ -87,6 +90,10 @@ export const getNavigationsteps = async (
         }
       }
     }
+
+
+    await AsyncStorage.setItem('addresses', JSON.stringify(addresses));
+    await AsyncStorage.setItem('routeInfo', JSON.stringify(RouteInfo));
 
     return { addresses, RouteInfo };
   } catch (error) {
